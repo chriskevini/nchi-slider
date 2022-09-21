@@ -12,6 +12,13 @@ enum DIRECTIONS {
   RIGHT,
 }
 
+function newGame(boardLength: number): Board {
+  const board = generateEmptyBoard(boardLength);
+  spawn(board);
+  spawn(board);
+  return board;
+}
+
 function generateEmptyBoard(boardLength: number): Board {
   return Array(boardLength)
     .fill(null)
@@ -177,12 +184,5 @@ function rotate(board: Board, rotations: number = 1): number {
   return rotations;
 }
 
-export {
-  generateEmptyBoard,
-  spawn,
-  slide,
-  DIRECTIONS,
-  rotate,
-  combineOverlappingCells,
-};
+export {newGame, spawn, slide, DIRECTIONS, rotate, combineOverlappingCells};
 export type {Board};
