@@ -74,8 +74,8 @@ function spawn(board: Board) {
 }
 
 //return true if there was a change after
-function slide(board: Board, direction: Directions): boolean {
-  const beforeSlide = board.map((row) => row.map((cells) => cells.slice()));
+function slide(board: Board, direction: Directions): Board {
+  board = board.map((row) => row.map((cells) => cells.slice()));
   let rotations: number;
   //rotate whole board depending on direction we want to slide
   switch (direction) {
@@ -91,9 +91,8 @@ function slide(board: Board, direction: Directions): boolean {
     case Directions.DOWN:
       rotations = rotate(board, 3);
       break;
-
     default:
-      return false;
+      return board;
   }
   //then slide
   for (let y = 0; y < board.length; y++) {
@@ -128,10 +127,11 @@ function slide(board: Board, direction: Directions): boolean {
     rotate(board, 4 - rotations);
   }
 
-  return JSON.stringify(beforeSlide) !== JSON.stringify(board);
+  return board;
 }
 
 function combineOverlappingCells(board: Board) {
+  board = board.map((row) => row.map((cells) => cells.slice()));
   for (let y = 0; y < board.length; y++) {
     for (let x = 0; x < board.length; x++) {
       if (board[y][x][0] && board[y][x][1]) {
@@ -140,6 +140,7 @@ function combineOverlappingCells(board: Board) {
       }
     }
   }
+  return board;
 }
 
 function combination(
