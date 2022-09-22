@@ -1,5 +1,5 @@
 import {useState} from "react";
-import {newGame} from "./game";
+import {newGame, slide, Directions} from "./game";
 import {BoardView} from "./BoardView";
 
 function App() {

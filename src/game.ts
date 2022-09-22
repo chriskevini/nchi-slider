@@ -5,7 +5,7 @@ type Cell = {
 type Cells = Array<Cell | undefined>;
 type Row = Array<Cells>;
 type Board = Array<Row>;
-enum DIRECTIONS {
+enum Directions {
   UP,
   DOWN,
   LEFT,
@@ -74,21 +74,21 @@ function spawn(board: Board) {
 }
 
 //return true if there was a change after
-function slide(board: Board, direction: DIRECTIONS): boolean {
+function slide(board: Board, direction: Directions): boolean {
   const beforeSlide = board.map((row) => row.map((cells) => cells.slice()));
   let rotations: number;
   //rotate whole board depending on direction we want to slide
   switch (direction) {
-    case DIRECTIONS.LEFT:
+    case Directions.LEFT:
       rotations = 0;
       break;
-    case DIRECTIONS.UP:
+    case Directions.UP:
       rotations = rotate(board, 1);
       break;
-    case DIRECTIONS.RIGHT:
+    case Directions.RIGHT:
       rotations = rotate(board, 2);
       break;
-    case DIRECTIONS.DOWN:
+    case Directions.DOWN:
       rotations = rotate(board, 3);
       break;
 
@@ -184,5 +184,5 @@ function rotate(board: Board, rotations: number = 1): number {
   return rotations;
 }
 
-export {newGame, spawn, slide, DIRECTIONS, rotate, combineOverlappingCells};
+export {newGame, spawn, slide, Directions, rotate, combineOverlappingCells};
 export type {Board};

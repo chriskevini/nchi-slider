@@ -1,18 +1,16 @@
 import {keyIn} from "readline-sync";
 import {
-  generateEmptyBoard,
+  newGame,
   spawn,
   slide,
-  DIRECTIONS,
+  Directions,
   rotate,
   combineOverlappingCells,
 } from "./game.js";
 import type {Board} from "./game.js";
 
 const BOARD_LENGTH = 4;
-const myBoard: Board = generateEmptyBoard(BOARD_LENGTH);
-spawn(myBoard);
-spawn(myBoard);
+const myBoard: Board = newGame(BOARD_LENGTH);
 printBoard(myBoard);
 console.log("Start");
 
@@ -25,16 +23,16 @@ while (!gameOver) {
       spawn(myBoard);
       break;
     case "w":
-      isLegalMove = slide(myBoard, DIRECTIONS.UP);
+      isLegalMove = slide(myBoard, Directions.UP);
       break;
     case "a":
-      isLegalMove = slide(myBoard, DIRECTIONS.LEFT);
+      isLegalMove = slide(myBoard, Directions.LEFT);
       break;
     case "s":
-      isLegalMove = slide(myBoard, DIRECTIONS.DOWN);
+      isLegalMove = slide(myBoard, Directions.DOWN);
       break;
     case "d":
-      isLegalMove = slide(myBoard, DIRECTIONS.RIGHT);
+      isLegalMove = slide(myBoard, Directions.RIGHT);
       break;
     case "r":
       rotate(myBoard);
