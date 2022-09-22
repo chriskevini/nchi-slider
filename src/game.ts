@@ -140,6 +140,7 @@ function combineOverlappingCells(board: Board) {
       }
     }
   }
+  spawn(board);
   return board;
 }
 

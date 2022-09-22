@@ -17,6 +17,8 @@ function App() {
       setBoard(slide(board, Directions.RIGHT));
     else if (event.code === "ShiftRight")
       setBoard(combineOverlappingCells(board));
+    else if (event.code === "ShiftRight")
+      setBoard(combineOverlappingCells(board));
   };
 
   return (

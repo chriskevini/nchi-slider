@@ -5,8 +5,8 @@ interface props {
   board: Board;
 }
 
-const colors = ["#776e65", "#776e65", "#f9f6f2", "#f9f6f2", "#f9f6f2"];
-const bgcolors = ["#eee4da", "#ede0c8", "#f2b179", "#f2b179", "#f2b179"];
+const colors = ["", "#776e65", "#776e65", "#f9f6f2", "#f9f6f2", "#f9f6f2"];
+const bgcolors = ["", "#eee4da", "#ede0c8", "#f2b179", "#f59563", "#f67c5f"];
 
 export function BoardView({board}: props) {
   const boardWidth = 90;
