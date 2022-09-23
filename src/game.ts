@@ -1,10 +1,19 @@
+import {structuredClone} from "./utils";
 type Cell = {
-  key: string;
+  key: number;
   content: string;
+  x: number;
+  y: number;
+  merged?: boolean;
+  spawned?: boolean;
+  toBePurged?: boolean;
 };
-type Cells = Array<Cell | undefined>;
-type Row = Array<Cells>;
-type Board = Array<Row>;
+type Cells = Array<Cell>;
+type Game = {
+  state: "playing" | "over";
+  cells: Cells;
+  boardLength: number;
+};
 enum Directions {
   UP,
   DOWN,
@@ -12,21 +21,42 @@ enum Directions {
   RIGHT,
 }
 
-function newGame(boardLength: number): Board {
-  const board = generateEmptyBoard(boardLength);
-  spawn(board);
-  spawn(board);
-  return board;
+function newGame(boardLength: number): Game {
+  const state = "playing";
+  const cells: Cells = [];
+  cells.push(generateRandomCell(cells, boardLength));
+  cells.push(generateRandomCell(cells, boardLength));
+  return {state, cells, boardLength};
 }
 
-function generateEmptyBoard(boardLength: number): Board {
-  return Array(boardLength)
-    .fill(null)
-    .map((row) =>
-      Array(boardLength)
-        .fill(null)
-        .map((cells) => [])
-    );
+function generateRandomCell(cells: Cells, boardLength: number): Cell {
+  const randomizedRange = (n: number) =>
+    [...Array(n).keys()].sort(function () {
+      return Math.random() - 0.5;
+    });
+  const rangex = randomizedRange(boardLength);
+  const rangey = randomizedRange(boardLength);
+  const occupiedCells = cells.map(
+    (cell) => cell && [cell.x, cell.y].toString()
+  );
+  let openCell = null;
+  for (const x of rangex) {
+    if (openCell) break;
+    for (const y of rangey) {
+      if (openCell) break;
+      if (!occupiedCells.includes([x, y].toString())) {
+        openCell = [x, y];
+      }
+    }
+  }
+  if (!openCell) openCell = [999, 999];
+  return {
+    key: cells.length,
+    content: getRandomLetter(),
+    x: openCell[0],
+    y: openCell[1],
+    spawned: true,
+  };
 }
 
 function getRandomLetter(): string {
@@ -48,100 +78,81 @@ function getRandomLetter(): string {
   return Object.keys(weights)[0];
 }
 
-function spawn(board: Board) {
-  const randomizedRange = (n: number) =>
-    [...Array(n).keys()].sort(function () {
-      return Math.random() - 0.5;
-    });
-  const rangex = randomizedRange(board.length);
-  const rangey = randomizedRange(board.length);
-  let inserted = false;
-  for (const x of rangex) {
-    if (inserted === true) break;
-    for (const y of rangey) {
-      if (board[y][x].length === 0) {
-        inserted = true;
-        board[y][x].push({
-          key: Math.random().toString(),
-          content: getRandomLetter(),
-          x: x,
-          y: y,
-        } as Cell);
-        break;
-      }
-    }
-  }
-}
-
-//return true if there was a change after
-function slide(board: Board, direction: Directions): Board {
-  board = board.map((row) => row.map((cells) => cells.slice()));
-  let rotations: number;
-  //rotate whole board depending on direction we want to slide
-  switch (direction) {
-    case Directions.LEFT:
-      rotations = 0;
-      break;
-    case Directions.UP:
-      rotations = rotate(board, 1);
-      break;
-    case Directions.RIGHT:
-      rotations = rotate(board, 2);
-      break;
-    case Directions.DOWN:
-      rotations = rotate(board, 3);
-      break;
-    default:
-      return board;
-  }
+function slide(game: Game, direction: Directions): Game {
+  let cells = structuredClone(game.cells);
+  //clean up old cells
+  cells = purgeCells(cells);
+  //rotate cells depending on direction we want to slide
+  const rotations = {
+    [Directions.LEFT]: 0,
+    [Directions.DOWN]: 1,
+    [Directions.RIGHT]: 2,
+    [Directions.UP]: 3,
+  }[direction];
+  cells = rotate(cells, game.boardLength, rotations);
+  //then group
+  const rows: Array<Cells> = Array(game.boardLength)
+    .fill(null)
+    .map((n) => []);
+  cells.forEach((cell: Cell) => cell && rows[cell.y].push(cell));
+  rows.forEach((row) => row.sort((a, b) => a.x - b.x));
   //then slide
-  for (let y = 0; y < board.length; y++) {
-    const row = board[y];
-    for (let x = 0; x < board.length; x++) {
-      const currentCell = row[x];
-      if (currentCell.length === 0) {
-        for (let i = x + 1; i < board.length; i++) {
-          if (row[i][0]) {
-            row[x].push({...row[i][0], x: x, y: y} as Cell);
-            row[i] = [];
-            break;
-          }
-        }
+  rows.forEach((row) => {
+    let i = 0;
+    let previous: Cell | undefined;
+    row.forEach((cell) => {
+      if (previous === undefined) {
+        cell.x = i;
+        previous = cell;
+      } else if (combination(previous, cell) !== undefined) {
+        cells.push({...combination(previous, cell), key: cells.length} as Cell);
+        cell.x = i++;
+        previous.toBePurged = true;
+        cell.toBePurged = true;
+        previous = undefined;
+      } else {
+        cell.x = ++i;
+        previous = cell;
       }
-      if (currentCell.length === 1) {
-        for (let i = x + 1; i < board.length; i++) {
-          if (row[i][0]) {
-            if (combination(row[i][0], currentCell[0]) !== undefined) {
-              row[x].push({...row[i][0], x: x, y: y} as Cell);
-              row[i] = [];
-            }
-            break;
-          }
-        }
-      }
-    }
-  }
-
+    });
+  });
   //then continue rotating until we get back to original orientation
   if (rotations > 0) {
-    rotate(board, 4 - rotations);
+    cells = rotate(cells, game.boardLength, 4 - rotations);
   }
+  //then generate a new cell if slide was succesful
+  if (JSON.stringify(cells) !== JSON.stringify(purgeCells(game.cells)))
+    cells.push(generateRandomCell(cells, game.boardLength));
 
-  return board;
+  return {...game, cells: cells};
 }
 
-function combineOverlappingCells(board: Board) {
-  board = board.map((row) => row.map((cells) => cells.slice()));
-  for (let y = 0; y < board.length; y++) {
-    for (let x = 0; x < board.length; x++) {
-      if (board[y][x][0] && board[y][x][1]) {
-        const c = combination(board[y][x][0], board[y][x][1]);
-        board[y][x] = [c];
+function rotate(
+  cells: Cells,
+  boardLength: number,
+  rotations: number = 1
+): Cells {
+  cells = structuredClone(cells);
+  cells.forEach((cell) => {
+    if (cell) {
+      for (let i = 0; i < rotations; i++) {
+        [cell.x, cell.y] = [boardLength - cell.y - 1, cell.x];
       }
     }
+  });
+  return cells;
+}
+
+function purgeCells(cells: Cells): Cells {
+  for (let i = 0; i < cells.length; i++) {
+    if (!cells[i]) continue;
+    if (cells[i].toBePurged) delete cells[i];
+    else {
+      cells[i].merged = false;
+      cells[i].spawned = false;
+    }
   }
-  spawn(board);
-  return board;
+  return cells;
 }
 
 function combination(
@@ -152,8 +163,11 @@ function combination(
   const [a, b] = [cellA.content, cellB.content];
 
   const result: Cell = {
-    key: Math.random().toString(),
+    key: 999,
     content: "",
+    x: cellA.x,
+    y: cellA.y,
+    merged: true,
   };
 
   const combinations = [
@@ -172,19 +186,32 @@ function combination(
   else return result;
 }
 
-function rotate(board: Board, rotations: number = 1): number {
-  for (let i = 0; i < rotations; i++) {
-    const rotatedBoard: Board = [];
-    for (let y = board.length - 1; y >= 0; y--) {
-      const row: Row = Array(board.length)
-        .fill(null)
-        .map((_, x) => board[x][y]);
-      rotatedBoard.push(row);
-    }
-    board.forEach((_, row) => (board[row] = rotatedBoard[row].slice()));
-  }
-  return rotations;
+function getLegalMoves(game: Game): Directions[] {
+  const legalMoves = [] as Directions[];
+
+  if (
+    JSON.stringify(slide(game, Directions.UP).cells) !==
+    JSON.stringify(game.cells)
+  )
+    legalMoves.push(Directions.UP);
+  if (
+    JSON.stringify(slide(game, Directions.DOWN).cells) !==
+    JSON.stringify(game.cells)
+  )
+    legalMoves.push(Directions.DOWN);
+  if (
+    JSON.stringify(slide(game, Directions.LEFT).cells) !==
+    JSON.stringify(game.cells)
+  )
+    legalMoves.push(Directions.LEFT);
+  if (
+    JSON.stringify(slide(game, Directions.RIGHT).cells) !==
+    JSON.stringify(game.cells)
+  )
+    legalMoves.push(Directions.RIGHT);
+  console.log("legal", legalMoves);
+  return legalMoves;
 }
 
-export {newGame, spawn, slide, Directions, rotate, combineOverlappingCells};
-export type {Board};
+export {newGame, slide, Directions, getLegalMoves};
+export type {Cells, Cell, Game};

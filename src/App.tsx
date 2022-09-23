@@ -1,40 +1,52 @@
 import {useState} from "react";
-import {newGame, slide, Directions, combineOverlappingCells} from "./game";
+import {newGame, slide, Directions, getLegalMoves} from "./game";
 import {BoardView} from "./BoardView";
 
+const BOARD_LENGTH = 4;
 function App() {
-  const [board, setBoard] = useState(newGame(4));
-  console.log(board);
+  const [game, setGame] = useState(newGame(BOARD_LENGTH));
 
   const handleKeyDown = (event: React.KeyboardEvent<HTMLDivElement>) => {
-    console.log(event.code);
-    if (event.code === "ArrowUp") setBoard(slide(board, Directions.UP));
-    else if (event.code === "ArrowDown")
-      setBoard(slide(board, Directions.DOWN));
-    else if (event.code === "ArrowLeft")
-      setBoard(slide(board, Directions.LEFT));
-    else if (event.code === "ArrowRight")
-      setBoard(slide(board, Directions.RIGHT));
-    else if (event.code === "ShiftRight")
-      setBoard(combineOverlappingCells(board));
-    else if (event.code === "ShiftRight")
-      setBoard(combineOverlappingCells(board));
+    const direction = {
+      ArrowUp: Directions.UP,
+      ArrowDown: Directions.DOWN,
+      ArrowLeft: Directions.LEFT,
+      ArrowRight: Directions.RIGHT,
+    }[event.code] as Directions;
+    if (!getLegalMoves(game).includes(direction)) return;
+    setGame((prev) => slide(prev, direction));
   };
 
   return (
     <div
       className="App"
       tabIndex={-1}
-      onKeyDown={handleKeyDown}
+      onKeyDown={throttle((e) => handleKeyDown(e), 100)}
       style={{
         display: "grid",
         placeItems: "center",
         height: "100vh",
         overflow: "hidden",
       }}>
-      <BoardView {...{board}} />
+      <BoardView
+        {...{game}}
+        censored
+      />
     </div>
   );
+}
+
+let throttling = false;
+function throttle(
+  func: (...args: any) => any,
+  interval: number
+): (...args: any) => any {
+  return function (...args) {
+    if (throttling) return;
+    func(...args);
+    throttling = true;
+    setTimeout(() => (throttling = false), interval);
+  };
 }
 
 export default App;

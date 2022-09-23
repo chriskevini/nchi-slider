@@ -1,0 +1,15 @@
+@keyframes zoom {
+  0%,
+  50% {
+    scale: 0.01;
+  }
+}
+@keyframes overshoot {
+  0%,
+  50% {
+    scale: 0.01;
+  }
+  75% {
+    scale: 1.1;
+  }
+}
