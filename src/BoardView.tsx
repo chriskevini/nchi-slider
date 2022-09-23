@@ -1,6 +1,7 @@
 import React, {useMemo} from "react";
 import {CellView} from "./CellView";
 import {Game} from "./game";
+import {windowSizeUtils} from "./windowSizeUtils";
 
 interface BoardViewProps {
   game: Game;
@@ -19,6 +20,14 @@ export function BoardView({
   //fontSizes
   const full = 0.9 * ((cellWidth * 2) / 3) + "vmin";
   const half = 0.9 * ((cellWidth * 1) / 2) + "vmin";
+
+  //scale down for large screens
+  const maxWidth = 600; //px
+  const {vmin} = windowSizeUtils();
+  const scale = useMemo(
+    () => Math.min(maxWidth / vmin(100), 1),
+    [window.innerWidth, window.innerHeight]
+  );
 
   const blankCells = useMemo(() => {
     const blankCells = [];
@@ -74,6 +83,7 @@ export function BoardView({
         backgroundColor: "#bbada0",
         borderRadius: borderRadius + "vmin",
         border: gapWidth + "vmin solid transparent",
+        scale: scale.toString(),
       }}>
       {blankCells}
       {cells}
