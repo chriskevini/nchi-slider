@@ -1,3 +1,7 @@
+body {
+  font-family: "Kaisei Tokumin", serif;
+}
+
 @keyframes zoom {
   0%,
   50% {

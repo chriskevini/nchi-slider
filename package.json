@@ -9,6 +9,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@fontsource/kaisei-tokumin": "^4.5.11",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
   },

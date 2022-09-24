@@ -9,19 +9,29 @@ interface CellViewProps {
   cellWidth: number;
   gapWidth: number;
   borderRadius: number;
-  full: string;
-  half: string;
-  censor: (word: string) => string;
+  censored?: boolean;
+  gray?: boolean;
 }
 export function CellView({
   currentCell,
   cellWidth,
   gapWidth,
   borderRadius,
-  full,
-  half,
-  censor,
+  censored = true,
+  gray = false,
 }: CellViewProps): React.ReactElement {
+  //fontSizes
+  const full = 0.9 * ((cellWidth * 2) / 3) + "vmin";
+  const half = 0.9 * ((cellWidth * 1) / 2) + "vmin";
+
+  function censor(word: string): string {
+    if (!censored) return word;
+    else return word.replaceAll("ん", "▢");
+  }
+
+  //おちんちん text shadow
+  const otntn = cellWidth * 0.035 + "vmin";
+
   return (
     <div
       style={{
@@ -33,7 +43,7 @@ export function CellView({
           "vmin " +
           (cellWidth + gapWidth) * currentCell.y +
           "vmin",
-        backgroundColor: bgcolors[currentCell.content.length],
+        backgroundColor: gray ? "#dcc" : bgcolors[currentCell.content.length],
         color: colors[currentCell.content.length],
         borderRadius: borderRadius + "vmin",
         display: "grid",
@@ -42,7 +52,9 @@ export function CellView({
         fontSize: currentCell.content.length === 1 ? full : half,
         lineHeight: "1",
         fontWeight: "bold",
-        transition: "translate 0.2s",
+        transition:
+          "translate 0.2s, background-color 0.2s, scale 0.3s cubic-bezier(.2,5,0,0)",
+        scale: gray ? "0.9" : "1.0",
         animation: currentCell.merged
           ? "overshoot 0.4s"
           : currentCell.spawned
@@ -55,8 +67,15 @@ export function CellView({
       <span
         style={{
           position: "absolute",
-          textShadow:
-            "0 0.75vmin #f47c5f, 0 -0.75vmin #f47c5f, 0.75vmin 0 #f47c5f, -0.75vmin 0 #f47c5f,  0.75vmin 0.75vmin #f47c5f, 0.75vmin -0.75vmin #f47c5f, -0.75vmin -0.75vmin #f47c5f, -0.75vmin 0.75vmin #f47c5f",
+          textShadow: gray
+            ? `0 ${otntn} #dcc, 0 -${otntn} #dcc,` +
+              `${otntn} 0 #dcc, -${otntn} 0 #dcc, ` +
+              `${otntn} ${otntn} #dcc, ${otntn} -${otntn} #dcc, ` +
+              `-${otntn} -${otntn} #dcc, -${otntn} ${otntn} #dcc`
+            : `0 ${otntn} #f47c5f, 0 -${otntn} #f47c5f,` +
+              `${otntn} 0 #f47c5f, -${otntn} 0 #f47c5f, ` +
+              `${otntn} ${otntn} #f47c5f, ${otntn} -${otntn} #f47c5f, ` +
+              `-${otntn} -${otntn} #f47c5f, -${otntn} ${otntn} #f47c5f`,
           fontSize: full,
           // fontWeight: "normal",
         }}>

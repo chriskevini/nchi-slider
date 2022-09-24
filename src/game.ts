@@ -10,7 +10,7 @@ type Cell = {
 };
 type Cells = Array<Cell>;
 type Game = {
-  state: "playing" | "over";
+  state: "playing" | "over" | "2xBonus";
   cells: Cells;
   boardLength: number;
 };
@@ -155,6 +155,14 @@ function purgeCells(cells: Cells): Cells {
   return cells;
 }
 
+export const combinations = [
+  "うんこ",
+  "うんち",
+  "おちんこ",
+  "おまんこ",
+  "おちんちん",
+];
+
 function combination(
   cellA: Cell | undefined,
   cellB: Cell | undefined
@@ -169,14 +177,6 @@ function combination(
     y: cellA.y,
     merged: true,
   };
-
-  const combinations = [
-    "うんこ",
-    "うんち",
-    "おちんこ",
-    "おまんこ",
-    "おちんちん",
-  ];
 
   for (const combo of combinations) {
     if (combo.includes(a + b)) result.content = a + b;

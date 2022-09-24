@@ -10,24 +10,18 @@ interface BoardViewProps {
 
 export function BoardView({
   game,
-  censored = false,
+  censored = true,
 }: BoardViewProps): React.ReactElement {
   const boardWidth = 90;
   const gapWidth = 2;
   const cellWidth =
     (boardWidth - gapWidth * (game.boardLength - 1)) / game.boardLength;
-  const borderRadius = 1.5;
-  //fontSizes
-  const full = 0.9 * ((cellWidth * 2) / 3) + "vmin";
-  const half = 0.9 * ((cellWidth * 1) / 2) + "vmin";
+  const borderRadius = 1;
 
   //scale down for large screens
   const maxWidth = 600; //px
   const {vmin} = windowSizeUtils();
-  const scale = useMemo(
-    () => Math.min(maxWidth / vmin(100), 1),
-    [window.innerWidth, window.innerHeight]
-  );
+  const scale = Math.min(maxWidth / vmin(100), 1);
 
   const blankCells = useMemo(() => {
     const blankCells = [];
@@ -61,18 +55,11 @@ export function BoardView({
             cellWidth,
             gapWidth,
             borderRadius,
-            full,
-            half,
-            censor,
+            censored,
           }}
         />
       )
   );
-
-  function censor(word: string): string {
-    if (!censored) return word;
-    else return word.replaceAll("ん", "▢");
-  }
 
   return (
     <div
