@@ -35,7 +35,9 @@ export function CellView({
   return (
     <div
       style={{
+        boxSizing: "border-box",
         position: "absolute",
+        alignItems: "center",
         width: cellWidth + "vmin",
         height: cellWidth + "vmin",
         translate:
@@ -43,8 +45,10 @@ export function CellView({
           "vmin " +
           (cellWidth + gapWidth) * currentCell.y +
           "vmin",
-        backgroundColor: gray ? "#dcc" : bgcolors[currentCell.content.length],
-        color: colors[currentCell.content.length],
+        backgroundColor: gray
+          ? "transparent"
+          : bgcolors[currentCell.content.length],
+        color: gray ? colors[1] : colors[currentCell.content.length],
         borderRadius: borderRadius + "vmin",
         display: "grid",
         placeItems: "center",
@@ -52,9 +56,10 @@ export function CellView({
         fontSize: currentCell.content.length === 1 ? full : half,
         lineHeight: "1",
         fontWeight: "bold",
-        transition:
-          "translate 0.2s, background-color 0.2s, scale 0.3s cubic-bezier(.2,5,0,0)",
+        transition: "all 0.2s, scale 0.3s cubic-bezier(.2,5,0,0)",
         scale: gray ? "0.9" : "1.0",
+        border: gray ? "0.05em solid" : "",
+        opacity: gray ? 0.5 : 1.0,
         animation: currentCell.merged
           ? "overshoot 0.4s"
           : currentCell.spawned
@@ -68,14 +73,14 @@ export function CellView({
         style={{
           position: "absolute",
           textShadow: gray
-            ? `0 ${otntn} #dcc, 0 -${otntn} #dcc,` +
-              `${otntn} 0 #dcc, -${otntn} 0 #dcc, ` +
-              `${otntn} ${otntn} #dcc, ${otntn} -${otntn} #dcc, ` +
-              `-${otntn} -${otntn} #dcc, -${otntn} ${otntn} #dcc`
-            : `0 ${otntn} #f47c5f, 0 -${otntn} #f47c5f,` +
-              `${otntn} 0 #f47c5f, -${otntn} 0 #f47c5f, ` +
-              `${otntn} ${otntn} #f47c5f, ${otntn} -${otntn} #f47c5f, ` +
-              `-${otntn} -${otntn} #f47c5f, -${otntn} ${otntn} #f47c5f`,
+            ? `0 ${otntn} ${colors[5]}, 0 -${otntn} ${colors[5]},` +
+              `${otntn} 0 ${colors[5]}, -${otntn} 0 ${colors[5]}, ` +
+              `${otntn} ${otntn} ${colors[5]}, ${otntn} -${otntn} ${colors[5]}, ` +
+              `-${otntn} -${otntn} ${colors[5]}, -${otntn} ${otntn} ${colors[5]}`
+            : `0 ${otntn} ${bgcolors[5]}, 0 -${otntn} ${bgcolors[5]},` +
+              `${otntn} 0 ${bgcolors[5]}, -${otntn} 0 ${bgcolors[5]}, ` +
+              `${otntn} ${otntn} ${bgcolors[5]}, ${otntn} -${otntn} ${bgcolors[5]}, ` +
+              `-${otntn} -${otntn} ${bgcolors[5]}, -${otntn} ${otntn} ${bgcolors[5]}`,
           fontSize: full,
           // fontWeight: "normal",
         }}>

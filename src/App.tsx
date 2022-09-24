@@ -32,8 +32,8 @@ function GameInfo({game, censored = true}: GameInfoProps) {
     <div
       style={{
         width: "90vmin",
-        height: "200px",
-        backgroundColor: "lime",
+        // height: "200px",
+        outline: "1px solid lime",
       }}>
       <h1
         style={{
@@ -43,21 +43,35 @@ function GameInfo({game, censored = true}: GameInfoProps) {
       </h1>
       <div
         style={{
-          fontSize: "30px",
-          textAlign: "center",
-          // width: "5em",
-          // height: "5em",
-          backgroundColor: "skyblue",
+          display: "flex",
+          // justifyContent: "space-around",
+          width: "100%",
+          backgroundColor: "red",
         }}>
-        <h5
-          style={{
-            fontSize: "0.5em",
-            // display: "block",
-          }}>
-          Score
-        </h5>
-        <p>1209312</p>
+        {[
+          {label: "SCORE", value: 120312},
+          {label: "BEST", value: 1209312},
+        ].map(({label, value}) => (
+          <div
+            key={label}
+            style={{
+              fontSize: "30px",
+              textAlign: "center",
+              flexGrow: "1",
+              backgroundColor: "skyblue",
+            }}>
+            <h5
+              style={{
+                fontSize: "0.5em",
+                // display: "block",
+              }}>
+              {label}
+            </h5>
+            <p>{value}</p>
+          </div>
+        ))}
       </div>
+
       <span
         style={{
           fontSize: "6vmin",
@@ -65,22 +79,28 @@ function GameInfo({game, censored = true}: GameInfoProps) {
         }}>
         Collection・コレクション
       </span>
-      {combinations.map((combo, i) => (
-        <CellView
-          key={i}
-          currentCell={{
-            content: combo,
-            key: i,
-            x: i,
-            y: 0,
-          }}
-          cellWidth={17}
-          gapWidth={1}
-          borderRadius={1}
-          censored={censored}
-          gray={!collection.includes(combo)}
-        />
-      ))}
+      <div
+        style={{
+          position: "relative",
+          height: "19vmin",
+        }}>
+        {combinations.map((combo, i) => (
+          <CellView
+            key={i}
+            currentCell={{
+              content: combo,
+              key: i,
+              x: i,
+              y: 0,
+            }}
+            cellWidth={17}
+            gapWidth={1}
+            borderRadius={1}
+            censored={censored}
+            gray={!collection.includes(combo)}
+          />
+        ))}
+      </div>
     </div>
   );
 }
@@ -111,7 +131,7 @@ function App() {
         alignItems: "center",
         flexWrap: "wrap",
         // placeItems: "center",
-        height: "100vh",
+        minHeight: "100vh",
         width: "100vw",
         // overflow: "hidden",
         color: "#776e65",
