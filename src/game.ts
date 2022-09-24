@@ -1,6 +1,6 @@
 import {structuredClone} from "./utils";
 type Cell = {
-  key: number;
+  key?: number;
   content: string;
   x: number;
   y: number;

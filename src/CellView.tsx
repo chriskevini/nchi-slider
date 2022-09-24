@@ -2,27 +2,30 @@ import React from "react";
 import {Cell} from "./game";
 
 const colors = ["", "#776e65", "#776e65", "#f9f6f2", "#f9f6f2", "#f9f6f2"];
-const bgcolors = ["", "#eee4da", "#ede0c8", "#f2b179", "#f59563", "#f67c5f"];
+const bgcolors = [
+  "#cdc1b4",
+  "#eee4da",
+  "#ede0c8",
+  "#f2b179",
+  "#f59563",
+  "#f67c5f",
+];
 
 interface CellViewProps {
   currentCell: Cell;
   cellWidth: number;
-  gapWidth: number;
-  borderRadius: number;
   censored?: boolean;
   gray?: boolean;
 }
 export function CellView({
   currentCell,
   cellWidth,
-  gapWidth,
-  borderRadius,
   censored = true,
   gray = false,
 }: CellViewProps): React.ReactElement {
   //fontSizes
-  const full = 0.9 * ((cellWidth * 2) / 3) + "vmin";
-  const half = 0.9 * ((cellWidth * 1) / 2) + "vmin";
+  const full = 0.9 * ((cellWidth * 2) / 3);
+  const half = 0.9 * ((cellWidth * 1) / 2);
 
   function censor(word: string): string {
     if (!censored) return word;
@@ -30,26 +33,31 @@ export function CellView({
   }
 
   //おちんちん text shadow
-  const otntn = cellWidth * 0.035 + "vmin";
+  const otntn = cellWidth * 0.035 + "px";
+
+  const grayStyle = {
+    color: colors[1],
+    backgroundColor: "transparent",
+    scale: "0.9",
+    border: "0.05em solid",
+    opacity: 0.5,
+    textShadow:
+      `0 ${otntn} ${colors[5]}, 0 -${otntn} ${colors[5]},` +
+      `${otntn} 0 ${colors[5]}, -${otntn} 0 ${colors[5]}, ` +
+      `${otntn} ${otntn} ${colors[5]}, ${otntn} -${otntn} ${colors[5]}, ` +
+      `-${otntn} -${otntn} ${colors[5]}, -${otntn} ${otntn} ${colors[5]}`,
+  };
 
   return (
     <div
       style={{
         boxSizing: "border-box",
-        position: "absolute",
         alignItems: "center",
-        width: cellWidth + "vmin",
-        height: cellWidth + "vmin",
-        translate:
-          (cellWidth + gapWidth) * currentCell.x +
-          "vmin " +
-          (cellWidth + gapWidth) * currentCell.y +
-          "vmin",
-        backgroundColor: gray
-          ? "transparent"
-          : bgcolors[currentCell.content.length],
-        color: gray ? colors[1] : colors[currentCell.content.length],
-        borderRadius: borderRadius + "vmin",
+        width: cellWidth,
+        height: cellWidth,
+        color: colors[currentCell.content.length],
+        backgroundColor: bgcolors[currentCell.content.length],
+        borderRadius: 4,
         display: "grid",
         placeItems: "center",
         textAlign: "center",
@@ -57,15 +65,16 @@ export function CellView({
         lineHeight: "1",
         fontWeight: "bold",
         transition: "all 0.2s, scale 0.3s cubic-bezier(.2,5,0,0)",
-        scale: gray ? "0.9" : "1.0",
-        border: gray ? "0.05em solid" : "",
-        opacity: gray ? 0.5 : 1.0,
+        scale: "1.0",
+        border: "",
+        opacity: 1.0,
         animation: currentCell.merged
           ? "overshoot 0.4s"
           : currentCell.spawned
           ? "zoom 0.4s"
           : "",
         zIndex: currentCell.merged ? 1 : 0,
+        ...(gray ? grayStyle : {}),
       }}>
       {censor(currentCell.content.slice(-4))}
       {/* special span for おちんちん  */}
@@ -73,10 +82,7 @@ export function CellView({
         style={{
           position: "absolute",
           textShadow: gray
-            ? `0 ${otntn} ${colors[5]}, 0 -${otntn} ${colors[5]},` +
-              `${otntn} 0 ${colors[5]}, -${otntn} 0 ${colors[5]}, ` +
-              `${otntn} ${otntn} ${colors[5]}, ${otntn} -${otntn} ${colors[5]}, ` +
-              `-${otntn} -${otntn} ${colors[5]}, -${otntn} ${otntn} ${colors[5]}`
+            ? grayStyle.textShadow
             : `0 ${otntn} ${bgcolors[5]}, 0 -${otntn} ${bgcolors[5]},` +
               `${otntn} 0 ${bgcolors[5]}, -${otntn} 0 ${bgcolors[5]}, ` +
               `${otntn} ${otntn} ${bgcolors[5]}, ${otntn} -${otntn} ${bgcolors[5]}, ` +

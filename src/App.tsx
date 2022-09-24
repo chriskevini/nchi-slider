@@ -21,6 +21,7 @@ interface GameInfoProps {
 
 function GameInfo({game, censored = true}: GameInfoProps) {
   const {vmin} = windowSizeUtils();
+  const containerWidth = Math.min(vmin(90), 600);
   const collection = [
     ...new Set(game.cells.map((cell) => cell && cell.content)),
   ];
@@ -31,7 +32,7 @@ function GameInfo({game, censored = true}: GameInfoProps) {
   return (
     <div
       style={{
-        width: "90vmin",
+        width: containerWidth,
         // height: "200px",
         outline: "1px solid lime",
       }}>
@@ -81,8 +82,11 @@ function GameInfo({game, censored = true}: GameInfoProps) {
       </span>
       <div
         style={{
-          position: "relative",
-          height: "19vmin",
+          display: "flex",
+          justifyContent: "space-between",
+          outline: "1px solid red",
+          height: "100px",
+          width: "100%",
         }}>
         {combinations.map((combo, i) => (
           <CellView
@@ -93,9 +97,7 @@ function GameInfo({game, censored = true}: GameInfoProps) {
               x: i,
               y: 0,
             }}
-            cellWidth={17}
-            gapWidth={1}
-            borderRadius={1}
+            cellWidth={(containerWidth / combinations.length) * 0.95}
             censored={censored}
             gray={!collection.includes(combo)}
           />

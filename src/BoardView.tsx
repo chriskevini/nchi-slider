@@ -12,16 +12,11 @@ export function BoardView({
   game,
   censored = true,
 }: BoardViewProps): React.ReactElement {
-  const boardWidth = 90;
-  const gapWidth = 2;
-  const cellWidth =
-    (boardWidth - gapWidth * (game.boardLength - 1)) / game.boardLength;
-  const borderRadius = 1;
-
-  //scale down for large screens
-  const maxWidth = 600; //px
   const {vmin} = windowSizeUtils();
-  const scale = Math.min(maxWidth / vmin(100), 1);
+  const containerWidth = Math.min(vmin(90), 600);
+  const gapWidth = containerWidth * 0.02;
+  const cellWidth =
+    (containerWidth - gapWidth * (game.boardLength - 1)) / game.boardLength;
 
   const blankCells = useMemo(() => {
     const blankCells = [];
@@ -29,35 +24,44 @@ export function BoardView({
       for (let y = 0; y < game.boardLength; y++) {
         blankCells.push(
           <div
-            key={x + "," + y}
+            key={[x, y].join(",")}
             style={{
               position: "absolute",
-              width: cellWidth + "vmin",
-              height: cellWidth + "vmin",
-              left: (cellWidth + gapWidth) * x + "vmin",
-              top: (cellWidth + gapWidth) * y + "vmin",
-              backgroundColor: "#cdc1b4",
-              borderRadius: borderRadius + "vmin",
-            }}></div>
+              translate: `${(cellWidth + gapWidth) * x}px  ${
+                (cellWidth + gapWidth) * y
+              }px`,
+            }}>
+            <CellView
+              currentCell={{content: "", x: x, y: y}}
+              cellWidth={cellWidth}
+            />
+          </div>
         );
       }
     }
     return blankCells;
-  }, [game.boardLength]);
+  }, [vmin(100)]);
 
   const cells = game.cells.map(
     (currentCell) =>
       currentCell && (
-        <CellView
+        <div
           key={currentCell.key}
-          {...{
-            currentCell,
-            cellWidth,
-            gapWidth,
-            borderRadius,
-            censored,
-          }}
-        />
+          style={{
+            position: "absolute",
+            translate: `${(cellWidth + gapWidth) * currentCell.x}px  ${
+              (cellWidth + gapWidth) * currentCell.y
+            }px`,
+            transition: "all 0.2s",
+          }}>
+          <CellView
+            {...{
+              currentCell,
+              cellWidth,
+              censored,
+            }}
+          />
+        </div>
       )
   );
 
@@ -65,12 +69,11 @@ export function BoardView({
     <div
       style={{
         position: "relative",
-        width: boardWidth + "vmin",
-        height: boardWidth + "vmin",
+        width: containerWidth,
+        height: containerWidth,
         backgroundColor: "#bbada0",
-        borderRadius: borderRadius + "vmin",
-        border: gapWidth + "vmin solid transparent",
-        scale: scale.toString(),
+        border: gapWidth + "px solid transparent",
+        borderRadius: 4,
       }}>
       {blankCells}
       {cells}
