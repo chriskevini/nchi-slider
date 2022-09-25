@@ -12,7 +12,8 @@
     "@fontsource/kaisei-tokumin": "^4.5.11",
     "@use-gesture/react": "^10.2.20",
     "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "react-dom": "^18.2.0",
+    "react-icons": "^4.4.0"
   },
   "devDependencies": {
     "@types/node": "^18.7.18",

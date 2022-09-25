@@ -31,6 +31,12 @@ body {
   }
 }
 
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+}
+
 button {
   color: #faf8ef;
   background-color: #776e65;
