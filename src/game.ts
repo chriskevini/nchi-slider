@@ -13,6 +13,7 @@ type Game = {
   state: "playing" | "over" | "2xBonus";
   cells: Cells;
   boardLength: number;
+  points: number[];
 };
 enum Directions {
   UP,
@@ -26,7 +27,8 @@ function newGame(boardLength: number): Game {
   const cells: Cells = [];
   cells.push(generateRandomCell(cells, boardLength));
   cells.push(generateRandomCell(cells, boardLength));
-  return {state, cells, boardLength};
+  const points: number[] = [];
+  return {state, cells, boardLength, points};
 }
 
 function generateRandomCell(cells: Cells, boardLength: number): Cell {
@@ -97,6 +99,7 @@ function slide(game: Game, direction: Directions): Game {
   cells.forEach((cell: Cell) => cell && rows[cell.y].push(cell));
   rows.forEach((row) => row.sort((a, b) => a.x - b.x));
   //then slide
+  let earnedPoints = 0;
   rows.forEach((row) => {
     let i = 0;
     let previous: Cell | undefined;
@@ -106,6 +109,10 @@ function slide(game: Game, direction: Directions): Game {
         previous = cell;
       } else if (combination(previous, cell) !== undefined) {
         cells.push({...combination(previous, cell), key: cells.length} as Cell);
+        earnedPoints += Math.pow(
+          5,
+          previous.content.length + cell.content.length
+        ); //*bonus
         cell.x = i++;
         previous.toBePurged = true;
         cell.toBePurged = true;
@@ -124,7 +131,7 @@ function slide(game: Game, direction: Directions): Game {
   if (JSON.stringify(cells) !== JSON.stringify(purgeCells(game.cells)))
     cells.push(generateRandomCell(cells, game.boardLength));
 
-  return {...game, cells: cells};
+  return {...game, cells: cells, points: [...game.points, earnedPoints]};
 }
 
 function rotate(

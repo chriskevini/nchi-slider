@@ -12,6 +12,7 @@ export function GameInfo({game, censored = true}: GameInfoProps) {
   const collection = [
     ...new Set(game.cells.map((cell) => cell && cell.content)),
   ];
+  const score = game.points.reduce((acc, curr) => acc + curr, 0);
 
   return (
     <div
@@ -51,7 +52,7 @@ export function GameInfo({game, censored = true}: GameInfoProps) {
           marginBottom: "10px",
         }}>
         {[
-          {label: "SCORE", value: 120312},
+          {label: "SCORE", value: score},
           {label: "BEST", value: 1209312},
         ].map(({label, value}) => (
           <div
