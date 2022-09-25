@@ -1,6 +1,7 @@
 import React, {useMemo} from "react";
 import {CellView} from "./CellView";
 import {Game} from "./game";
+import {GameOverDialog} from "./GameOverDialog";
 import {windowSizeUtils} from "./windowSizeUtils";
 
 interface BoardViewProps {
@@ -12,11 +13,15 @@ export function BoardView({
   game,
   censored = true,
 }: BoardViewProps): React.ReactElement {
-  const {vmin, vw, vh} = windowSizeUtils();
-  const containerWidth = Math.min(vw(90), vh(100) - 330, 600);
+  const {vmin, vmax, vw, vh} = windowSizeUtils();
+  // const containerWidth = Math.min(Math.max(vmin(96), vh(100) - 330), 600); //vh(100) - 330,
+  const verticalOrientation = 330 + vmin(100) < vmax(100);
+  let containerWidth = verticalOrientation ? vmin(96) : vmax(100) - 330;
+  containerWidth = Math.min(containerWidth, 600);
   const gapWidth = containerWidth * 0.02;
   const cellWidth =
-    (containerWidth - gapWidth * (game.boardLength - 1)) / game.boardLength;
+    (containerWidth - gapWidth * (game.boardLength + 1)) / game.boardLength;
+  const margin = (((containerWidth * 1) / 0.96) * 0.04) / 2;
 
   const blankCells = useMemo(() => {
     const blankCells = [];
@@ -40,7 +45,7 @@ export function BoardView({
       }
     }
     return blankCells;
-  }, [vmin(100)]);
+  }, [vmin(100), vmax(100)]);
 
   const cells = game.cells.map(
     (currentCell) =>
@@ -69,15 +74,17 @@ export function BoardView({
     <div
       style={{
         position: "relative",
+        boxSizing: "border-box",
         width: containerWidth,
         height: containerWidth,
         backgroundColor: "#bbada0",
         border: gapWidth + "px solid transparent",
         borderRadius: 4,
-        margin: "1vmax",
+        margin: margin,
       }}>
       {blankCells}
       {cells}
+      {game.state === "over" || (false && <GameOverDialog />)}
     </div>
   );
 }

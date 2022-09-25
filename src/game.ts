@@ -198,29 +198,14 @@ function combination(
 }
 
 function getLegalMoves(game: Game): Directions[] {
-  const legalMoves = [] as Directions[];
+  const directions = [0, 1, 2, 3] as Directions[];
 
-  if (
-    JSON.stringify(slide(game, Directions.UP).cells) !==
-    JSON.stringify(game.cells)
-  )
-    legalMoves.push(Directions.UP);
-  if (
-    JSON.stringify(slide(game, Directions.DOWN).cells) !==
-    JSON.stringify(game.cells)
-  )
-    legalMoves.push(Directions.DOWN);
-  if (
-    JSON.stringify(slide(game, Directions.LEFT).cells) !==
-    JSON.stringify(game.cells)
-  )
-    legalMoves.push(Directions.LEFT);
-  if (
-    JSON.stringify(slide(game, Directions.RIGHT).cells) !==
-    JSON.stringify(game.cells)
-  )
-    legalMoves.push(Directions.RIGHT);
-  console.log("legal", legalMoves);
+  const legalMoves = directions.filter(
+    (direction) =>
+      JSON.stringify(slide(game, direction).cells) !==
+      JSON.stringify(game.cells)
+  );
+
   return legalMoves;
 }
 

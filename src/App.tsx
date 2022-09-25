@@ -4,6 +4,7 @@ import {BoardView} from "./BoardView";
 import {useLocalStorage} from "./useLocalStorage";
 import {GameInfo} from "./GameInfo";
 import {useDrag} from "@use-gesture/react";
+import {GameOverDialog} from "./GameOverDialog";
 
 const BOARD_LENGTH = 4;
 
@@ -33,7 +34,11 @@ function App() {
       else direction = Directions.UP;
     }
 
-    if (!getLegalMoves(game).includes(direction)) return;
+    const legalMoves = getLegalMoves(game);
+    if (legalMoves.length === 0)
+      return setGame((prev) => ({...prev, state: "over"}));
+
+    if (!legalMoves.includes(direction)) return;
     throttle(() => setGame((prev) => slide(prev, direction)), 100)();
   };
   const bind = useDrag((state) => handleSwipe(state), {
