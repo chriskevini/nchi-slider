@@ -17,3 +17,16 @@ body {
     scale: 1.1;
   }
 }
+
+@keyframes points {
+  0% {
+    translate: 1em 1em;
+    opacity: 1;
+    animation-timing-function: linear;
+  }
+  20% {
+    translate: 1.5em 0.7em;
+    opacity: 1;
+    animation-timing-function: ease-out;
+  }
+}

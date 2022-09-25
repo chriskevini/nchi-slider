@@ -131,7 +131,11 @@ function slide(game: Game, direction: Directions): Game {
   if (JSON.stringify(cells) !== JSON.stringify(purgeCells(game.cells)))
     cells.push(generateRandomCell(cells, game.boardLength));
 
-  return {...game, cells: cells, points: [...game.points, earnedPoints]};
+  return {
+    ...game,
+    cells: cells,
+    points: earnedPoints === 0 ? game.points : [...game.points, earnedPoints],
+  };
 }
 
 function rotate(

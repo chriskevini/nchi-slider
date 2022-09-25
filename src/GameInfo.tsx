@@ -76,6 +76,20 @@ export function GameInfo({game, censored = true}: GameInfoProps) {
             <span>{value}</span>
           </div>
         ))}
+        {game.points.map((pt) => (
+          <span
+            style={{
+              position: "absolute",
+              color: "#faf8ef",
+              translate: "3em -1em",
+              fontSize: "20px",
+              fontWeight: "bold",
+              opacity: 0,
+              animation: "points 0.8s ",
+            }}>
+            {"+" + pt}
+          </span>
+        ))}
       </div>
 
       <span
