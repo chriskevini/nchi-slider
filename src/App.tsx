@@ -3,6 +3,7 @@ import {newGame, slide, Directions, getLegalMoves} from "./game";
 import {BoardView} from "./BoardView";
 import {useLocalStorage} from "./useLocalStorage";
 import {GameInfo} from "./GameInfo";
+import {useDrag} from "@use-gesture/react";
 
 const BOARD_LENGTH = 4;
 
@@ -10,23 +11,42 @@ function App() {
   const [game, setGame] = useState(newGame(BOARD_LENGTH));
   const [censored, setCensored] = useLocalStorage("true");
 
-  const handleKeyDown = (event: React.KeyboardEvent<HTMLDivElement>) => {
-    const direction = {
-      ArrowUp: Directions.UP,
-      ArrowDown: Directions.DOWN,
-      ArrowLeft: Directions.LEFT,
-      ArrowRight: Directions.RIGHT,
-    }[event.code] as Directions;
+  const handleSwipe = (state: {
+    type: string;
+    direction: number[];
+    distance: number[];
+  }) => {
+    const {
+      type,
+      direction: [swipeX, swipeY],
+      distance: [dx, dy],
+    } = state;
+    if (!(type === "pointerup" || type === "keydown")) return;
+    if (swipeX === 0 && swipeY === 0) return;
+
+    let direction: Directions;
+    if (swipeX * swipeX + dx > swipeY * swipeY + dy) {
+      if (swipeX > 0) direction = Directions.RIGHT;
+      else direction = Directions.LEFT;
+    } else {
+      if (swipeY > 0) direction = Directions.DOWN;
+      else direction = Directions.UP;
+    }
+
     if (!getLegalMoves(game).includes(direction)) return;
-    setGame((prev) => slide(prev, direction));
+    throttle(() => setGame((prev) => slide(prev, direction)), 100)();
   };
+  const bind = useDrag((state) => handleSwipe(state), {
+    swipe: {distance: 1, duration: 1000},
+  });
 
   return (
     <div
       className="App"
       tabIndex={-1}
-      onKeyDown={throttle((e) => handleKeyDown(e), 100)}
+      {...bind()}
       style={{
+        touchAction: "none",
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
