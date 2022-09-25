@@ -14,8 +14,11 @@ export function BoardView({
   censored = true,
 }: BoardViewProps): React.ReactElement {
   const {vmin, vmax, vw, vh} = windowSizeUtils();
-  // const containerWidth = Math.min(Math.max(vmin(96), vh(100) - 330), 600); //vh(100) - 330,
-  const verticalOrientation = 330 + vmin(100) < vmax(100);
+  const verticalOrientation =
+    game.state === "over" || 330 + vmin(100) < vmax(100);
+  // verticalOrientation = game.state === "over"
+  // this prevents board from resizing when the virtual keyboard pops up
+  // which only happens when the game is over and player is inputting name
   let containerWidth = verticalOrientation ? vmin(96) : vmax(100) - 330;
   containerWidth = Math.min(containerWidth, 600);
   const gapWidth = containerWidth * 0.02;
@@ -45,7 +48,7 @@ export function BoardView({
       }
     }
     return blankCells;
-  }, [vmin(100), vmax(100)]);
+  }, [containerWidth]);
 
   const cells = game.cells.map(
     (currentCell) =>
@@ -81,10 +84,11 @@ export function BoardView({
         border: gapWidth + "px solid transparent",
         borderRadius: 4,
         margin: margin,
+        // translate: game.state === "over" && verticalOrientation ? "0 -50%" : "",
       }}>
       {blankCells}
       {cells}
-      {game.state === "over" || (false && <GameOverDialog />)}
+      {true && <GameOverDialog {...{gapWidth}} />}
     </div>
   );
 }
