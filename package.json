@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@fontsource/kaisei-tokumin": "^4.5.11",
+    "@use-gesture/react": "^10.2.20",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
   },
