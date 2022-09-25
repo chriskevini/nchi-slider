@@ -7,11 +7,13 @@ import {windowSizeUtils} from "./windowSizeUtils";
 interface BoardViewProps {
   game: Game;
   censored?: boolean;
+  onPlayAgain: () => void;
 }
 
 export function BoardView({
   game,
   censored = true,
+  onPlayAgain,
 }: BoardViewProps): React.ReactElement {
   const {vmin, vmax, vw, vh} = windowSizeUtils();
   const verticalOrientation =
@@ -88,7 +90,7 @@ export function BoardView({
       }}>
       {blankCells}
       {cells}
-      {true && <GameOverDialog {...{gapWidth}} />}
+      {true && <GameOverDialog {...{game, gapWidth, onPlayAgain}} />}
     </div>
   );
 }

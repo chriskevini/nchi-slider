@@ -1,7 +1,15 @@
+import {Game} from "./game";
+
 interface GameOverDialogProps {
+  game: Game;
   gapWidth: number;
+  onPlayAgain: () => void;
 }
-export function GameOverDialog({gapWidth}: GameOverDialogProps) {
+export function GameOverDialog({
+  game,
+  gapWidth,
+  onPlayAgain,
+}: GameOverDialogProps) {
   return (
     <div
       style={{
@@ -35,7 +43,7 @@ export function GameOverDialog({gapWidth}: GameOverDialogProps) {
           name="name"
           id="name"
           placeholder="name"
-          maxLength={5}
+          maxLength={10}
           style={{
             borderRadius: "4px",
             maxWidth: gapWidth * 40,
@@ -69,6 +77,7 @@ export function GameOverDialog({gapWidth}: GameOverDialogProps) {
           GAME OVER
         </span>
         <button
+          onClick={onPlayAgain}
           style={{
             fontSize: gapWidth * 2,
           }}>

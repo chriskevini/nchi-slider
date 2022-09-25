@@ -66,7 +66,12 @@ function App() {
         // backgroundColor: "red",
       }}>
       <GameInfo {...{game, censored}} />
-      <BoardView {...{game, censored}} />
+      <BoardView
+        {...{game, censored}}
+        onPlayAgain={() => {
+          setGame(newGame(BOARD_LENGTH));
+        }}
+      />
     </div>
   );
 }
