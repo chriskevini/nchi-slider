@@ -23,7 +23,7 @@ export function GameInfo({game, censored = true}: GameInfoProps) {
       <span
         style={{
           fontSize: "100px",
-          letterSpacing: "-30px",
+          letterSpacing: "-0.3em",
         }}>
         んち
         <span
@@ -35,16 +35,21 @@ export function GameInfo({game, censored = true}: GameInfoProps) {
           }}>
           スライダー
         </span>
+        <span
+          style={{
+            position: "absolute",
+            top: "6em",
+            left: "10.5em",
+            fontSize: "0.15em",
+            fontWeight: "bold",
+            fontStyle: "italic",
+            letterSpacing: "0.05em",
+          }}>
+          NCHI
+          <span style={{fontSize: "0.8em"}}> Slider</span>
+        </span>
       </span>
-      <span
-        style={{
-          position: "absolute",
-          top: "6em",
-          left: "10em",
-          fontWeight: "bold",
-        }}>
-        NCHI Slider
-      </span>
+
       <div
         style={{
           display: "flex",
