@@ -1,111 +1,10 @@
 import {useState} from "react";
-import {
-  newGame,
-  slide,
-  Directions,
-  getLegalMoves,
-  combinations,
-  Game,
-} from "./game";
+import {newGame, slide, Directions, getLegalMoves} from "./game";
 import {BoardView} from "./BoardView";
-import {windowSizeUtils} from "./windowSizeUtils";
-import {CellView} from "./CellView";
 import {useLocalStorage} from "./useLocalStorage";
+import {GameInfo} from "./GameInfo";
 
 const BOARD_LENGTH = 4;
-
-interface GameInfoProps {
-  game: Game;
-  censored?: boolean;
-}
-
-function GameInfo({game, censored = true}: GameInfoProps) {
-  const {vmin} = windowSizeUtils();
-  const containerWidth = Math.min(vmin(90), 600);
-  const collection = [
-    ...new Set(game.cells.map((cell) => cell && cell.content)),
-  ];
-
-  // let collection: string[] = [];
-  // collection = ["おちんこ"];
-  // collection = combinations;
-  return (
-    <div
-      style={{
-        width: containerWidth,
-        // height: "200px",
-        outline: "1px solid lime",
-      }}>
-      <h1
-        style={{
-          backgroundColor: "pink",
-        }}>
-        nchi slider
-      </h1>
-      <div
-        style={{
-          display: "flex",
-          // justifyContent: "space-around",
-          width: "100%",
-          backgroundColor: "red",
-        }}>
-        {[
-          {label: "SCORE", value: 120312},
-          {label: "BEST", value: 1209312},
-        ].map(({label, value}) => (
-          <div
-            key={label}
-            style={{
-              fontSize: "30px",
-              textAlign: "center",
-              flexGrow: "1",
-              backgroundColor: "skyblue",
-            }}>
-            <h5
-              style={{
-                fontSize: "0.5em",
-                // display: "block",
-              }}>
-              {label}
-            </h5>
-            <p>{value}</p>
-          </div>
-        ))}
-      </div>
-
-      <span
-        style={{
-          fontSize: "6vmin",
-          // fontStyle: "italic",
-        }}>
-        Collection・コレクション
-      </span>
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "space-between",
-          outline: "1px solid red",
-          height: "100px",
-          width: "100%",
-        }}>
-        {combinations.map((combo, i) => (
-          <CellView
-            key={i}
-            currentCell={{
-              content: combo,
-              key: i,
-              x: i,
-              y: 0,
-            }}
-            cellWidth={(containerWidth / combinations.length) * 0.95}
-            censored={censored}
-            gray={!collection.includes(combo)}
-          />
-        ))}
-      </div>
-    </div>
-  );
-}
 
 function App() {
   const [game, setGame] = useState(newGame(BOARD_LENGTH));
@@ -131,13 +30,15 @@ function App() {
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
+        alignContent: "start",
         flexWrap: "wrap",
-        // placeItems: "center",
+        // gap: "1vmax",
+        // paddingTop: "1vmax",
         minHeight: "100vh",
         width: "100vw",
-        // overflow: "hidden",
         color: "#776e65",
         backgroundColor: "#faf8ef",
+        // backgroundColor: "red",
       }}>
       <GameInfo {...{game, censored}} />
       <BoardView {...{game, censored}} />

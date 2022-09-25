@@ -12,8 +12,8 @@ export function BoardView({
   game,
   censored = true,
 }: BoardViewProps): React.ReactElement {
-  const {vmin} = windowSizeUtils();
-  const containerWidth = Math.min(vmin(90), 600);
+  const {vmin, vw, vh} = windowSizeUtils();
+  const containerWidth = Math.min(vw(90), vh(100) - 330, 600);
   const gapWidth = containerWidth * 0.02;
   const cellWidth =
     (containerWidth - gapWidth * (game.boardLength - 1)) / game.boardLength;
@@ -74,6 +74,7 @@ export function BoardView({
         backgroundColor: "#bbada0",
         border: gapWidth + "px solid transparent",
         borderRadius: 4,
+        margin: "1vmax",
       }}>
       {blankCells}
       {cells}

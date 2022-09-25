@@ -1,8 +1,15 @@
 import React from "react";
 import {Cell} from "./game";
 
-const colors = ["", "#776e65", "#776e65", "#f9f6f2", "#f9f6f2", "#f9f6f2"];
-const bgcolors = [
+export const colors = [
+  "",
+  "#776e65",
+  "#776e65",
+  "#f9f6f2",
+  "#f9f6f2",
+  "#f9f6f2",
+];
+export const bgcolors = [
   "#cdc1b4",
   "#eee4da",
   "#ede0c8",
@@ -75,6 +82,7 @@ export function CellView({
           : "",
         zIndex: currentCell.merged ? 1 : 0,
         ...(gray ? grayStyle : {}),
+        textShadow: "",
       }}>
       {censor(currentCell.content.slice(-4))}
       {/* special span for おちんちん  */}
