@@ -5,8 +5,9 @@ import {bgcolors, CellView, colors} from "./CellView";
 interface GameInfoProps {
   game: Game;
   censored?: boolean;
+  bestScore: number;
 }
-export function GameInfo({game, censored = true}: GameInfoProps) {
+export function GameInfo({game, censored = true, bestScore}: GameInfoProps) {
   const {vmin} = windowSizeUtils();
   const containerWidth = 300;
   const collection = [
@@ -58,7 +59,7 @@ export function GameInfo({game, censored = true}: GameInfoProps) {
         }}>
         {[
           {label: "SCORE", value: score},
-          {label: "BEST", value: 1209312},
+          {label: "BEST", value: bestScore},
         ].map(({label, value}) => (
           <div
             key={label}
@@ -81,8 +82,9 @@ export function GameInfo({game, censored = true}: GameInfoProps) {
             <span>{value}</span>
           </div>
         ))}
-        {game.points.map((pt) => (
+        {game.points.map((pt, i) => (
           <span
+            key={i}
             style={{
               position: "absolute",
               color: "#faf8ef",

@@ -11,6 +11,7 @@ const BOARD_LENGTH = 4;
 function App() {
   const [game, setGame] = useState(newGame(BOARD_LENGTH));
   const [censored, setCensored] = useLocalStorage("true");
+  const [bestScore, setBestScore] = useLocalStorage(0);
 
   const handleSwipe = (state: {
     type: string;
@@ -35,8 +36,10 @@ function App() {
     }
 
     const legalMoves = getLegalMoves(game);
-    if (legalMoves.length === 0)
+    if (legalMoves.length === 0) {
+      setBestScore(game.points.reduce((acc, curr) => acc + curr, 0));
       return setGame((prev) => ({...prev, state: "over"}));
+    }
 
     if (!legalMoves.includes(direction)) return;
     throttle(() => setGame((prev) => slide(prev, direction)), 100)();
@@ -65,7 +68,7 @@ function App() {
         backgroundColor: "#faf8ef",
         // backgroundColor: "red",
       }}>
-      <GameInfo {...{game, censored}} />
+      <GameInfo {...{game, censored, bestScore}} />
       <BoardView
         {...{game, censored}}
         onPlayAgain={() => {

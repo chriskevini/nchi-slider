@@ -90,7 +90,9 @@ export function BoardView({
       }}>
       {blankCells}
       {cells}
-      {true && <GameOverDialog {...{game, gapWidth, onPlayAgain}} />}
+      {game.state === "over" && (
+        <GameOverDialog {...{game, gapWidth, onPlayAgain}} />
+      )}
     </div>
   );
 }
