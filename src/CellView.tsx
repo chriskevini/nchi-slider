@@ -58,7 +58,9 @@ export function CellView({
   return (
     <div
       style={{
-        boxSizing: "border-box",
+        // boxSizing: "border-box",
+        // this prevents shifting for collectionView
+        // but leaving it on causes gray cells to overflow on safari on ipad
         alignItems: "center",
         width: cellWidth,
         height: cellWidth,
@@ -73,7 +75,6 @@ export function CellView({
         fontWeight: "bold",
         transition: "all 0.2s, scale 0.3s cubic-bezier(.2,5,0,0)",
         scale: "1.0",
-        border: "",
         opacity: 1.0,
         animation: currentCell.merged
           ? "overshoot 0.4s"
