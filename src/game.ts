@@ -100,6 +100,7 @@ function slide(game: Game, direction: Directions): Game {
   rows.forEach((row) => row.sort((a, b) => a.x - b.x));
   //then slide
   let earnedPoints = 0;
+  const multipler = game.state === "2xBonus" ? 2 : 1;
   rows.forEach((row) => {
     let i = 0;
     let previous: Cell | undefined;
@@ -109,10 +110,9 @@ function slide(game: Game, direction: Directions): Game {
         previous = cell;
       } else if (combination(previous, cell) !== undefined) {
         cells.push({...combination(previous, cell), key: cells.length} as Cell);
-        earnedPoints += Math.pow(
-          3,
-          previous.content.length + cell.content.length
-        ); //*bonus
+        earnedPoints +=
+          Math.pow(3, previous.content.length + cell.content.length) *
+          multipler;
         cell.x = i++;
         previous.toBePurged = true;
         cell.toBePurged = true;

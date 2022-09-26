@@ -2,18 +2,21 @@ import React, {useMemo} from "react";
 import {CellView} from "./CellView";
 import {Game} from "./game";
 import {GameOverDialog} from "./GameOverDialog";
+import {GameWinDialog} from "./GameWinDialog";
 import {windowSizeUtils} from "./windowSizeUtils";
 
 interface BoardViewProps {
   game: Game;
   censored?: boolean;
   onPlayAgain: () => void;
+  onContinue: () => void;
 }
 
 export function BoardView({
   game,
   censored = true,
   onPlayAgain,
+  onContinue,
 }: BoardViewProps): React.ReactElement {
   const {vmin, vmax, vw, vh} = windowSizeUtils();
   const verticalOrientation =
@@ -91,6 +94,9 @@ export function BoardView({
       {cells}
       {game.state === "over" && (
         <GameOverDialog {...{game, gapWidth, onPlayAgain}} />
+      )}
+      {game.state === "2xBonus" && (
+        <GameWinDialog {...{gapWidth, onContinue}} />
       )}
     </div>
   );

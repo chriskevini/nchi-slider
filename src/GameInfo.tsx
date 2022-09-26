@@ -30,6 +30,7 @@ export function GameInfo({
     <div
       key={label}
       style={{
+        position: "relative",
         display: "flex",
         flexDirection: "column",
         textAlign: "left",
@@ -39,19 +40,24 @@ export function GameInfo({
         fontSize: Math.min(vmin(7), 30),
         color: "#faf8ef",
         backgroundColor: bgcolors[0],
+        overflow: "hidden",
       }}>
       <span
         style={{
           fontSize: "0.3em",
+          zIndex: 1,
         }}>
         {label}
       </span>
       <span
         style={{
           margin: "auto 0",
+          fontWeight: "bold",
+          zIndex: 1,
         }}>
         {value}
       </span>
+      {label === "SCORE" && game.state === "2xBonus" && <BonusIndicator />}
     </div>
   ));
 
@@ -60,7 +66,7 @@ export function GameInfo({
       key={i}
       style={{
         position: "absolute",
-        color: "#faf8ef",
+        color: game.state === "2xBonus" ? bgcolors[5] : colors[5],
         translate: "3em -1em",
         fontSize: "20px",
         fontWeight: "bold",
@@ -86,11 +92,28 @@ export function GameInfo({
           marginBottom: "10px",
         }}>
         {scoreBoxes}
-        <Interactives {...{setCensored, censored, onRestart}} />
         {floatingPoints}
+        <Interactives {...{setCensored, censored, onRestart}} />
       </div>
       <CollectionView {...{containerWidth, censored, collection}} />
     </div>
+  );
+}
+
+function BonusIndicator() {
+  return (
+    <span
+      style={{
+        position: "absolute",
+        fontSize: "3em",
+        right: 0,
+        top: 0,
+        lineHeight: 1,
+        color: bgcolors[5],
+        animation: "fadeIn 1s",
+      }}>
+      2x
+    </span>
   );
 }
 

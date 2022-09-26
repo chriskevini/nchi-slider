@@ -1,5 +1,5 @@
 import {useState} from "react";
-import {newGame, slide, Directions, getLegalMoves} from "./game";
+import {newGame, slide, Directions, getLegalMoves, combinations} from "./game";
 import {BoardView} from "./BoardView";
 import {useLocalStorage} from "./useLocalStorage";
 import {GameInfo} from "./GameInfo";
@@ -11,6 +11,8 @@ function App() {
   const [game, setGame] = useState(newGame(BOARD_LENGTH));
   const [censored, setCensored] = useLocalStorage("censored", true);
   const [bestScore, setBestScore] = useLocalStorage("bestScore", 0);
+  // prevent swipes while player has not clicked "continue"
+  const [continueWithBonus, setContinueWithBonus] = useState(false);
 
   const handleSwipe = (state: {
     type: string;
@@ -22,8 +24,19 @@ function App() {
       direction: [swipeX, swipeY],
       distance: [dx, dy],
     } = state;
+
     if (!(type === "pointerup" || type === "keydown")) return;
     if (swipeX === 0 && swipeY === 0) return;
+
+    const isCollectionComplete =
+      game.state === "2xBonus" ||
+      [...new Set(game.cells.map((cell) => cell && cell.content))].filter((e) =>
+        combinations.includes(e)
+      ).length === combinations.length;
+    if (isCollectionComplete && game.state === "playing")
+      return setGame((prev) => ({...prev, state: "2xBonus"}));
+    //prevent player from playing while GameWinDialog is visible
+    if (isCollectionComplete && !continueWithBonus) return;
 
     let direction: Directions;
     if (swipeX * swipeX + dx > swipeY * swipeY + dy) {
@@ -73,9 +86,8 @@ function App() {
       />
       <BoardView
         {...{game, censored}}
-        onPlayAgain={() => {
-          setGame(newGame(BOARD_LENGTH));
-        }}
+        onPlayAgain={() => setGame(newGame(BOARD_LENGTH))}
+        onContinue={() => setContinueWithBonus(true)}
       />
     </div>
   );
