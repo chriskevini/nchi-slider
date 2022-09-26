@@ -11,7 +11,7 @@ const BOARD_LENGTH = 4;
 function App() {
   const [game, setGame] = useState(newGame(BOARD_LENGTH));
   const [censored, setCensored] = useLocalStorage("true");
-  const [bestScore, setBestScore] = useLocalStorage(0);
+  const [bestScore, setBestScore] = useLocalStorage("bestScore", 0);
 
   const handleSwipe = (state: {
     type: string;
@@ -37,7 +37,8 @@ function App() {
 
     const legalMoves = getLegalMoves(game);
     if (legalMoves.length === 0) {
-      setBestScore(game.points.reduce((acc, curr) => acc + curr, 0));
+      const score = game.points.reduce((acc, curr) => acc + curr, 0);
+      setBestScore(Math.max(bestScore, score));
       return setGame((prev) => ({...prev, state: "over"}));
     }
 

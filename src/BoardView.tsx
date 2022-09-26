@@ -86,7 +86,6 @@ export function BoardView({
         border: gapWidth + "px solid transparent",
         borderRadius: 4,
         margin: margin,
-        // translate: game.state === "over" && verticalOrientation ? "0 -50%" : "",
       }}>
       {blankCells}
       {cells}
