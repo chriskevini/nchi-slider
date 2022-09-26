@@ -4,7 +4,6 @@ import {BoardView} from "./BoardView";
 import {useLocalStorage} from "./useLocalStorage";
 import {GameInfo} from "./GameInfo";
 import {useDrag} from "@use-gesture/react";
-import {GameOverDialog} from "./GameOverDialog";
 
 const BOARD_LENGTH = 4;
 
@@ -61,15 +60,17 @@ function App() {
         alignItems: "center",
         alignContent: "start",
         flexWrap: "wrap",
-        // gap: "1vmax",
-        // paddingTop: "1vmax",
         minHeight: "100vh",
         width: "100vw",
         color: "#776e65",
         backgroundColor: "#faf8ef",
-        // backgroundColor: "red",
       }}>
-      <GameInfo {...{game, censored, bestScore}} />
+      <GameInfo
+        {...{game, censored, setCensored, bestScore}}
+        onRestart={() => {
+          setGame(newGame(BOARD_LENGTH));
+        }}
+      />
       <BoardView
         {...{game, censored}}
         onPlayAgain={() => {
