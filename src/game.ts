@@ -110,7 +110,7 @@ function slide(game: Game, direction: Directions): Game {
       } else if (combination(previous, cell) !== undefined) {
         cells.push({...combination(previous, cell), key: cells.length} as Cell);
         earnedPoints += Math.pow(
-          5,
+          3,
           previous.content.length + cell.content.length
         ); //*bonus
         cell.x = i++;
