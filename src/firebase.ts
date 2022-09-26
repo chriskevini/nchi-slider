@@ -1,5 +1,10 @@
 import {initializeApp} from "firebase/app";
-import {getFirestore, collection, addDoc} from "firebase/firestore/lite";
+import {
+  getFirestore,
+  collection,
+  addDoc,
+  serverTimestamp,
+} from "firebase/firestore/lite";
 
 const firebaseConfig = {
   apiKey: "AIzaSyCRb1Pf09W3TOwugVF92b-N_hxhobtUp5A",
@@ -17,5 +22,5 @@ console.log(db);
 
 export async function submitScore(scoreInfo: {}) {
   const scoresRef = collection(db, "nchiSlider", "db", "scores");
-  return addDoc(scoresRef, scoreInfo);
+  return addDoc(scoresRef, {scoreInfo, createdAt: serverTimestamp()});
 }
