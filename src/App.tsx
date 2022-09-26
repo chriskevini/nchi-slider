@@ -10,7 +10,7 @@ const BOARD_LENGTH = 4;
 
 function App() {
   const [game, setGame] = useState(newGame(BOARD_LENGTH));
-  const [censored, setCensored] = useLocalStorage("true");
+  const [censored, setCensored] = useLocalStorage("censored", true);
   const [bestScore, setBestScore] = useLocalStorage("bestScore", 0);
 
   const handleSwipe = (state: {
