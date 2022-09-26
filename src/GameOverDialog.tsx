@@ -23,7 +23,7 @@ export function GameOverDialog({
       <div
         style={{
           position: "absolute",
-          inset: -gapWidth * 2,
+          inset: -gapWidth * 1.5,
           display: "grid",
           placeItems: "center",
           backgroundColor: "#faf8efa8",
@@ -57,6 +57,7 @@ function DialogToggler({setHidden, hidden}: DialogTogglerProps) {
         right: "0em",
         width: "2em",
         height: "2em",
+        padding: 0,
         color: "#776e65",
         backgroundColor: "transparent",
         opacity: hidden ? 0.5 : 1,
@@ -99,6 +100,7 @@ function HighScoreView({game, gapWidth, score}: HighScoreViewProps) {
         flexWrap: "wrap",
         justifyContent: "center",
         textAlign: "center",
+        fontSize: Math.max(gapWidth * 2, 16),
       }}>
       <span
         style={{
