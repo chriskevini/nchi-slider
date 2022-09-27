@@ -17,7 +17,7 @@ export function GameOverDialog({
   const [hidden, setHidden] = useState(false);
   const [bestScore] = useLocalStorage("bestScore", 0);
   const score = game.points.reduce((acc, curr) => acc + curr, 0);
-  const newHighScore = score === bestScore;
+  const newHighScore = true || score === bestScore;
   return (
     <>
       <div
@@ -68,22 +68,28 @@ function DialogToggler({setHidden, hidden}: DialogTogglerProps) {
   );
 }
 
+const FLAGS =
+  "🇺🇳,🇺🇸,🇨🇦,🇯🇵,🇨🇳,🇮🇳,🇦🇫,🇦🇽,🇦🇱,🇩🇿,🇦🇸,🇦🇩,🇦🇴,🇦🇮,🇦🇶,🇦🇬,🇦🇷,🇦🇲,🇦🇼,🇦🇺,🇦🇹,🇦🇿,🇧🇸,🇧🇭,🇧🇩,🇧🇧,🇧🇾,🇧🇪,🇧🇿,🇧🇯,🇧🇲,🇧🇹,🇧🇴,🇧🇦,🇧🇼,🇧🇷,🇮🇴,🇻🇬,🇧🇳,🇧🇬,🇧🇫,🇧🇮,🇰🇭,🇨🇲,🇮🇨,🇨🇻,🇧🇶,🇰🇾,🇨🇫,🇹🇩,🇨🇱,🇨🇽,🇨🇨,🇨🇴,🇰🇲,🇨🇬,🇨🇩,🇨🇰,🇨🇷,🇨🇮,🇭🇷,🇨🇺,🇨🇼,🇨🇾,🇨🇿,🇩🇰,🇩🇯,🇩🇲,🇩🇴,🇪🇨,🇪🇬,🇸🇻,🇬🇶,🇪🇷,🇪🇪,🇪🇹,🇪🇺,🇫🇰,🇫🇴,🇫🇯,🇫🇮,🇫🇷,🇬🇫,🇵🇫,🇹🇫,🇬🇦,🇬🇲,🇬🇪,🇩🇪,🇬🇭,🇬🇮,🇬🇷,🇬🇱,🇬🇩,🇬🇵,🇬🇺,🇬🇹,🇬🇬,🇬🇳,🇬🇼,🇬🇾,🇭🇹,🇭🇳,🇭🇰,🇭🇺,🇮🇸,🇮🇩,🇮🇷,🇮🇶,🇮🇪,🇮🇲,🇮🇱,🇮🇹,🇯🇲,🎌,🇯🇪,🇯🇴,🇰🇿,🇰🇪,🇰🇮,🇽🇰,🇰🇼,🇰🇬,🇱🇦,🇱🇻,🇱🇧,🇱🇸,🇱🇷,🇱🇾,🇱🇮,🇱🇹,🇱🇺,🇲🇴,🇲🇰,🇲🇬,🇲🇼,🇲🇾,🇲🇻,🇲🇱,🇲🇹,🇲🇭,🇲🇶,🇲🇷,🇲🇺,🇾🇹,🇲🇽,🇫🇲,🇲🇩,🇲🇨,🇲🇳,🇲🇪,🇲🇸,🇲🇦,🇲🇿,🇲🇲,🇳🇦,🇳🇷,🇳🇵,🇳🇱,🇳🇨,🇳🇿,🇳🇮,🇳🇪,🇳🇬,🇳🇺,🇳🇫,🇰🇵,🇲🇵,🇳🇴,🇴🇲,🇵🇰,🇵🇼,🇵🇸,🇵🇦,🇵🇬,🇵🇾,🇵🇪,🇵🇭,🇵🇳,🇵🇱,🇵🇹,🇵🇷,🇶🇦,🇷🇪,🇷🇴,🇷🇺,🇷🇼,🇼🇸,🇸🇲,🇸🇦,🇸🇳,🇷🇸,🇸🇨,🇸🇱,🇸🇬,🇸🇽,🇸🇰,🇸🇮,🇬🇸,🇸🇧,🇸🇴,🇿🇦,🇰🇷,🇸🇸,🇪🇸,🇱🇰,🇧🇱,🇸🇭,🇰🇳,🇱🇨,🇵🇲,🇻🇨,🇸🇩,🇸🇷,🇸🇿,🇸🇪,🇨🇭,🇸🇾,🇹🇼,🇹🇯,🇹🇿,🇹🇭,🇹🇱,🇹🇬,🇹🇰,🇹🇴,🇹🇹,🇹🇳,🇹🇷,🇹🇲,🇹🇨,🇹🇻,🇻🇮,🇺🇬,🇺🇦,🇦🇪,🇬🇧,🏴󠁧󠁢󠁥󠁮󠁧󠁿,🏴󠁧󠁢󠁳󠁣󠁴󠁿,🏴󠁧󠁢󠁷󠁬󠁳󠁿,🇺🇾,🇺🇿,🇻🇺,🇻🇦,🇻🇪,🇻🇳,🇼🇫,🇪🇭,🇾🇪,🇿🇲,🇿🇼";
+
 interface HighScoreViewProps {
   game: Game;
   score: number;
   gapWidth: number;
 }
 function HighScoreView({game, gapWidth, score}: HighScoreViewProps) {
-  const [name, setName] = useState("");
+  const [name, setName] = useLocalStorage("name", "");
+  const [flag, setFlag] = useLocalStorage("flag", "🇺🇳");
   const [waiting, setWaiting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
+
   const handleSubmit: React.FormEventHandler<HTMLFormElement> = (e) => {
     e.preventDefault();
     const scoreInfo = {
       name: name,
-      cells: game.cells.filter((c) => c),
-      points: game.points,
+      flag: flag,
       score: score,
+      points: game.points,
+      cells: game.cells.filter((c) => c),
     };
     setWaiting(true);
     submitScore(scoreInfo)
@@ -115,6 +121,25 @@ function HighScoreView({game, gapWidth, score}: HighScoreViewProps) {
         <form
           onSubmit={handleSubmit}
           style={{display: "flex", gap: gapWidth}}>
+          <select
+            name="flag"
+            id="flag"
+            onChange={(e) => setFlag(e.target.value)}
+            value={flag}
+            style={{
+              borderRadius: "4px",
+              border: "1px solid #776e65",
+              padding: "0em 0.25em",
+              backgroundColor: "white",
+            }}>
+            {FLAGS.split(",").map((flag) => (
+              <option
+                key={flag}
+                value={flag}>
+                {flag}
+              </option>
+            ))}
+          </select>
           <input
             type="text"
             name="name"
@@ -123,6 +148,7 @@ function HighScoreView({game, gapWidth, score}: HighScoreViewProps) {
             value={name}
             onChange={(e) => setName(e.target.value)}
             maxLength={10}
+            required
             style={{
               borderRadius: "4px",
               maxWidth: gapWidth * 40,
