@@ -1,6 +1,7 @@
 import {combinations, Game} from "./game";
 import {windowSizeUtils} from "./windowSizeUtils";
 import {bgcolors, CellView, colors} from "./CellView";
+import Leaderboard from "./Leaderboard";
 
 interface GameInfoProps {
   game: Game;
@@ -58,6 +59,7 @@ export function GameInfo({
         {value}
       </span>
       {label === "SCORE" && game.state === "2xBonus" && <BonusIndicator />}
+      {label === "BEST" && <Leaderboard />}
     </div>
   ));
 
@@ -133,7 +135,7 @@ function Interactives({censored, setCensored, onRestart}: InteractivesProps) {
         justifyContent: "space-between",
         minWidth: 60,
       }}>
-      <div
+      <button
         onClick={() => setCensored(!censored)}
         style={{
           position: "relative",
@@ -142,6 +144,7 @@ function Interactives({censored, setCensored, onRestart}: InteractivesProps) {
           alignItems: "center",
           width: "100%",
           aspectRatio: 2,
+          padding: 0,
           borderRadius: 4,
           border: `1px solid ${colors[1]}40`,
           fontSize: 22,
@@ -175,15 +178,16 @@ function Interactives({censored, setCensored, onRestart}: InteractivesProps) {
             transition:
               "translate 0.3s cubic-bezier(.86,1.72,.01,.59), background-color 0.15s",
           }}></div>
-      </div>
+      </button>
       <button
         onClick={onRestart}
         style={{
+          position: "relative",
           padding: "0.2em",
           borderRadius: 4,
           aspectRatio: 2,
         }}>
-        Restart
+        <span>Restart</span>
       </button>
     </div>
   );

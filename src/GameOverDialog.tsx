@@ -163,7 +163,7 @@ function HighScoreView({game, gapWidth, score}: HighScoreViewProps) {
               backgroundColor: "#f67c5f",
               border: "none",
             }}>
-            Submit
+            <span>Submit</span>
           </button>
         </form>
       )}
@@ -214,7 +214,7 @@ function GameOverView({gapWidth, onPlayAgain}: GameOverViewProps) {
         style={{
           fontSize: gapWidth * 2,
         }}>
-        Play Again
+        <span>Play Again</span>
       </button>
     </div>
   );

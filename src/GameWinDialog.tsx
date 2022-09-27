@@ -43,7 +43,7 @@ export function GameWinDialog({gapWidth, onContinue}: GameWinDialogProps) {
           style={{
             fontSize: gapWidth * 2,
           }}>
-          Continue with 2x Bonus
+          <span>Continue with 2x Bonus</span>
         </button>
       </div>
     </div>

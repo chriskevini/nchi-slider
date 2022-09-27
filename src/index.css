@@ -1,6 +1,8 @@
 body {
   font-family: "Kaisei Tokumin", serif;
   margin: 0;
+  user-select: none;
+  -moz-user-select: none;
 }
 
 @keyframes zoom {
@@ -53,4 +55,9 @@ button {
   /* cursor: pointer; */
   /* has an ugly blue highlight on click */
   font-family: "Kaisei Tokumin", serif;
+}
+
+/* hellotalk dictionary deterrent */
+span {
+  pointer-events: none;
 }

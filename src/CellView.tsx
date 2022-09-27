@@ -1,22 +1,23 @@
 import React from "react";
 import {Cell} from "./game";
 
-export const colors = [
-  "",
-  "#776e65",
-  "#776e65",
-  "#f9f6f2",
-  "#f9f6f2",
-  "#f9f6f2",
-];
-export const bgcolors = [
-  "#cdc1b4",
-  "#eee4da",
-  "#ede0c8",
-  "#f2b179",
-  "#f59563",
-  "#f67c5f",
-];
+export const colors: {[key: number | string]: string} = {
+  1: "#776e65",
+  2: "#776e65",
+  3: "#f9f6f2",
+  4: "#f9f6f2",
+  5: "#f9f6f2",
+  default: "#776e65",
+};
+export const bgcolors: {[key: number | string]: string} = {
+  0: "#cdc1b4",
+  1: "#eee4da",
+  2: "#ede0c8",
+  3: "#f2b179",
+  4: "#f59563",
+  5: "#f67c5f",
+  default: "#faf8ef",
+};
 
 interface CellViewProps {
   currentCell: Cell;
@@ -85,7 +86,7 @@ export function CellView({
         ...(gray ? grayStyle : {}),
         textShadow: "",
       }}>
-      {censor(currentCell.content.slice(-4))}
+      <span>{censor(currentCell.content.slice(-4))}</span>
       {/* special span for おちんちん  */}
       <span
         style={{
