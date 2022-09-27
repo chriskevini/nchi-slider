@@ -3,7 +3,6 @@ import {newGame, slide, Directions, getLegalMoves, combinations} from "./game";
 import {BoardView} from "./BoardView";
 import {useLocalStorage} from "./useLocalStorage";
 import {GameInfo} from "./GameInfo";
-import {useDrag} from "@use-gesture/react";
 
 const BOARD_LENGTH = 4;
 
@@ -18,13 +17,15 @@ function App() {
     type: string;
     direction: number[];
     distance: number[];
+    axis: string | undefined;
+    target: {};
   }) => {
     const {
       type,
       direction: [swipeX, swipeY],
-      distance: [dx, dy],
+      axis,
     } = state;
-
+    console.log(state.target);
     if (!(type === "pointerup" || type === "keydown")) return;
     if (swipeX === 0 && swipeY === 0) return;
 
@@ -39,7 +40,7 @@ function App() {
     if (isCollectionComplete && !continueWithBonus) return;
 
     let direction: Directions;
-    if (swipeX * swipeX + dx > swipeY * swipeY + dy) {
+    if (axis === "x") {
       if (swipeX > 0) direction = Directions.RIGHT;
       else direction = Directions.LEFT;
     } else {
@@ -57,15 +58,11 @@ function App() {
     if (!legalMoves.includes(direction)) return;
     throttle(() => setGame((prev) => slide(prev, direction)), 100)();
   };
-  const bind = useDrag((state) => handleSwipe(state), {
-    swipe: {distance: 1, duration: 1000},
-  });
 
   return (
     <div
       className="App"
       tabIndex={-1}
-      {...bind()}
       style={{
         touchAction: "none",
         display: "flex",
@@ -85,7 +82,7 @@ function App() {
         }}
       />
       <BoardView
-        {...{game, censored}}
+        {...{game, censored, handleSwipe}}
         onPlayAgain={() => setGame(newGame(BOARD_LENGTH))}
         onContinue={() => setContinueWithBonus(true)}
       />

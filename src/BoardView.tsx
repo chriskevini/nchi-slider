@@ -1,3 +1,4 @@
+import {useDrag} from "@use-gesture/react";
 import React, {useMemo} from "react";
 import {CellView} from "./CellView";
 import {Game} from "./game";
@@ -10,6 +11,13 @@ interface BoardViewProps {
   censored?: boolean;
   onPlayAgain: () => void;
   onContinue: () => void;
+  handleSwipe: (state: {
+    type: string;
+    direction: number[];
+    distance: number[];
+    axis: string | undefined;
+    target: {};
+  }) => void;
 }
 
 export function BoardView({
@@ -17,6 +25,7 @@ export function BoardView({
   censored = true,
   onPlayAgain,
   onContinue,
+  handleSwipe,
 }: BoardViewProps): React.ReactElement {
   const {vmin, vmax, vw, vh} = windowSizeUtils();
   const verticalOrientation =
@@ -78,9 +87,16 @@ export function BoardView({
       )
   );
 
+  const bind = useDrag((state) => handleSwipe(state));
+
   return (
     <div
+      {...bind()}
+      // onKeyDown={(e) => console.log(e)}
+      tabIndex={-1}
       style={{
+        // touchAction: "none",
+        outline: "none",
         position: "relative",
         boxSizing: "border-box",
         width: containerWidth,
