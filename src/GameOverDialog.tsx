@@ -17,7 +17,7 @@ export function GameOverDialog({
   const [hidden, setHidden] = useState(false);
   const [bestScore] = useLocalStorage("bestScore", 0);
   const score = game.points.reduce((acc, curr) => acc + curr, 0);
-  const newHighScore = true || score === bestScore;
+  const newHighScore = score === bestScore;
   return (
     <>
       <div

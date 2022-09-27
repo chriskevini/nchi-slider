@@ -16,6 +16,7 @@ export const bgcolors: {[key: number | string]: string} = {
   3: "#f2b179",
   4: "#f59563",
   5: "#f67c5f",
+  gaps: "#bbada0",
   default: "#faf8ef",
 };
 

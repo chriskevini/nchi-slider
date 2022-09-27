@@ -58,6 +58,24 @@ button {
 }
 
 /* hellotalk dictionary deterrent */
-span {
+span,
+table,
+tbody,
+tr,
+td,
+caption {
   pointer-events: none;
+}
+
+.htHate {
+  position: absolute;
+  inset: 0;
+  background-color: #f003;
+  /* z-index: 5; */
+  pointer-events: none;
+}
+
+.skeleton {
+  background-color: #fff4;
+  animation: breathe 1.5s infinite;
 }
