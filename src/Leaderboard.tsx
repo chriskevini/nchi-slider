@@ -5,11 +5,25 @@ import {BsArrowLeftSquareFill} from "react-icons/bs";
 import {getScores} from "./firebase";
 import {DocumentData, Timestamp} from "firebase/firestore/lite";
 
+const NUMBER_OF_SCORES_TO_SHOW = 10;
+
 function Leaderboard() {
   const [showDialog, setShowDialog] = useState(false);
   const [scores, setScores] = useState<DocumentData[]>(scoresSkeleton);
   useEffect(() => {
-    getScores(10).then((scores) => setScores(scores));
+    function padWithEmpty(scores: {}[]) {
+      const padding = Array(NUMBER_OF_SCORES_TO_SHOW - scores.length).fill({
+        flag: "　",
+        name: "　",
+        score: "　",
+        createdAt: "　",
+      });
+      return [...scores, ...padding];
+    }
+    if (showDialog)
+      getScores(NUMBER_OF_SCORES_TO_SHOW).then((scores) =>
+        setScores(padWithEmpty(scores))
+      );
   }, [showDialog]);
   console.log(scores);
   return (
@@ -25,6 +39,7 @@ function Leaderboard() {
         style={{
           position: "fixed",
           inset: 0,
+          // height: "28.75rem",
           maxHeight: "95vh",
           overflow: "hidden",
           zIndex: 10,
@@ -123,14 +138,12 @@ const iconButtonStyle: React.CSSProperties = {
   backgroundColor: "transparent",
 };
 
-const scoresSkeleton = Array(10)
-  .fill(null)
-  .map((n) => ({
-    flag: <div className="skeleton">　</div>,
-    name: <div className="skeleton">{"　".repeat(Math.random() * 4 + 2)}</div>,
-    score: <div className="skeleton">　　　</div>,
-    createdAt: <div className="skeleton">　　　　　　　　</div>,
-  }));
+const scoresSkeleton = Array(NUMBER_OF_SCORES_TO_SHOW).fill({
+  flag: <div className="skeleton">　</div>,
+  name: <div className="skeleton">　</div>,
+  score: <div className="skeleton">　　　</div>,
+  createdAt: <div className="skeleton">　　　　　　　　</div>,
+});
 
 function relativeTimestamp(timestampToCompare: Timestamp) {
   const second = 1;
