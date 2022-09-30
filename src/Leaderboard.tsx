@@ -26,10 +26,22 @@ function Leaderboard() {
       );
   }, [showDialog]);
   console.log(scores);
+
+  function openDialog() {
+    window.history.pushState(null, "", null);
+    window.onpopstate = closeDialog;
+    setShowDialog(true);
+  }
+
+  function closeDialog() {
+    window.onpopstate = null;
+    setShowDialog(false);
+  }
+
   return (
     <>
       <button
-        onClick={() => setShowDialog(true)}
+        onClick={openDialog}
         style={iconButtonStyle}>
         <GiTrophyCup />
       </button>
@@ -116,7 +128,7 @@ function Leaderboard() {
             fontSize: "20px",
             width: "3.5em",
           }}
-          onClick={() => setShowDialog(false)}>
+          onClick={closeDialog}>
           <BsArrowLeftSquareFill />
         </button>
       </dialog>
