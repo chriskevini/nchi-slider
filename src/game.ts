@@ -1,4 +1,4 @@
-import {structuredClone} from "./utils";
+import { structuredClone } from "./utils";
 type Cell = {
   key?: number;
   content: string;
@@ -28,7 +28,7 @@ function newGame(boardLength: number): Game {
   cells.push(generateRandomCell(cells, boardLength));
   cells.push(generateRandomCell(cells, boardLength));
   const points: number[] = [];
-  return {state, cells, boardLength, points};
+  return { state, cells, boardLength, points };
 }
 
 function generateRandomCell(cells: Cells, boardLength: number): Cell {
@@ -62,7 +62,7 @@ function generateRandomCell(cells: Cells, boardLength: number): Cell {
 }
 
 function getRandomLetter(): string {
-  const weights: {[key: string]: number} = {
+  const weights: { [key: string]: number } = {
     ん: 0.27,
     ち: 0.22,
     お: 0.17,
@@ -109,7 +109,10 @@ function slide(game: Game, direction: Directions): Game {
         cell.x = i;
         previous = cell;
       } else if (combination(previous, cell) !== undefined) {
-        cells.push({...combination(previous, cell), key: cells.length} as Cell);
+        cells.push({
+          ...combination(previous, cell),
+          key: cells.length,
+        } as Cell);
         earnedPoints +=
           Math.pow(3, previous.content.length + cell.content.length) *
           multipler;
@@ -209,5 +212,5 @@ function getLegalMoves(game: Game): Directions[] {
   return legalMoves;
 }
 
-export {newGame, slide, Directions, getLegalMoves};
-export type {Cells, Cell, Game};
+export { newGame, slide, Directions, getLegalMoves };
+export type { Cells, Cell, Game };

@@ -1,6 +1,6 @@
-import {combinations, Game} from "./game";
-import {windowSizeUtils} from "./windowSizeUtils";
-import {bgcolors, CellView, colors} from "./CellView";
+import { combinations, Game } from "./game";
+import { windowSizeUtils } from "./windowSizeUtils";
+import { bgcolors, CellView, colors } from "./CellView";
 import Leaderboard from "./Leaderboard";
 
 interface GameInfoProps {
@@ -17,7 +17,7 @@ export function GameInfo({
   bestScore,
   onRestart,
 }: GameInfoProps) {
-  const {vmin} = windowSizeUtils();
+  const { vmin } = windowSizeUtils();
   const containerWidth = Math.min(vmin(80), 300);
   const collection = [
     ...new Set(game.cells.map((cell) => cell && cell.content)),
@@ -25,9 +25,9 @@ export function GameInfo({
   const score = game.points.reduce((acc, curr) => acc + curr, 0);
 
   const scoreBoxes = [
-    {label: "SCORE", value: score},
-    {label: "BEST", value: bestScore},
-  ].map(({label, value}) => (
+    { label: "SCORE", value: score },
+    { label: "BEST", value: bestScore },
+  ].map(({ label, value }) => (
     <div
       key={label}
       style={{
@@ -42,12 +42,14 @@ export function GameInfo({
         color: "#faf8ef",
         backgroundColor: bgcolors[0],
         overflow: "hidden",
-      }}>
+      }}
+    >
       <span
         style={{
           fontSize: "0.3em",
           zIndex: 1,
-        }}>
+        }}
+      >
         {label}
       </span>
       <span
@@ -55,7 +57,8 @@ export function GameInfo({
           margin: "auto 0",
           fontWeight: "bold",
           zIndex: 1,
-        }}>
+        }}
+      >
         {value}
       </span>
       {label === "SCORE" && game.state === "2xBonus" && <BonusIndicator />}
@@ -74,7 +77,8 @@ export function GameInfo({
         fontWeight: "bold",
         opacity: 0,
         animation: "points 0.8s ",
-      }}>
+      }}
+    >
       {"+" + pt}
     </span>
   ));
@@ -84,7 +88,8 @@ export function GameInfo({
       style={{
         width: containerWidth,
         position: "relative",
-      }}>
+      }}
+    >
       <Logo width={containerWidth} />
       <div
         style={{
@@ -92,12 +97,13 @@ export function GameInfo({
           width: "100%",
           gap: "10px",
           marginBottom: "10px",
-        }}>
+        }}
+      >
         {scoreBoxes}
         {floatingPoints}
-        <Interactives {...{setCensored, censored, onRestart}} />
+        <Interactives {...{ setCensored, censored, onRestart }} />
       </div>
-      <CollectionView {...{containerWidth, censored, collection}} />
+      <CollectionView {...{ containerWidth, censored, collection }} />
     </div>
   );
 }
@@ -113,7 +119,8 @@ function BonusIndicator() {
         lineHeight: 1,
         color: bgcolors[5],
         animation: "fadeIn 1s",
-      }}>
+      }}
+    >
       2x
     </span>
   );
@@ -125,7 +132,7 @@ interface InteractivesProps {
   onRestart: () => void;
 }
 
-function Interactives({censored, setCensored, onRestart}: InteractivesProps) {
+function Interactives({ censored, setCensored, onRestart }: InteractivesProps) {
   return (
     <div
       style={{
@@ -134,7 +141,8 @@ function Interactives({censored, setCensored, onRestart}: InteractivesProps) {
         gap: 10,
         justifyContent: "space-between",
         minWidth: 60,
-      }}>
+      }}
+    >
       <button
         onClick={() => setCensored(!censored)}
         style={{
@@ -152,18 +160,21 @@ function Interactives({censored, setCensored, onRestart}: InteractivesProps) {
           textAlign: "center",
           backgroundColor: censored ? bgcolors[1] : bgcolors[5],
           transition: "background-color 0.15s",
-        }}>
+        }}
+      >
         <span
           style={{
             width: "100%",
             color: colors[5],
-          }}>
+          }}
+        >
           ん
         </span>
         <span
           style={{
             width: "100%",
-          }}>
+          }}
+        >
           ▢
         </span>
         <div
@@ -177,7 +188,8 @@ function Interactives({censored, setCensored, onRestart}: InteractivesProps) {
             translate: censored ? "-50%" : "50%",
             transition:
               "translate 0.3s cubic-bezier(.86,1.72,.01,.59), background-color 0.15s",
-          }}></div>
+          }}
+        ></div>
       </button>
       <button
         onClick={onRestart}
@@ -186,20 +198,22 @@ function Interactives({censored, setCensored, onRestart}: InteractivesProps) {
           padding: "0.2em",
           borderRadius: 4,
           aspectRatio: 2,
-        }}>
+        }}
+      >
         <span>Restart</span>
       </button>
     </div>
   );
 }
 
-function Logo({width}: {width: number}) {
+function Logo({ width }: { width: number }) {
   return (
     <span
       style={{
         fontSize: width / 3,
         letterSpacing: "-0.3em",
-      }}>
+      }}
+    >
       んち
       <span
         style={{
@@ -207,7 +221,8 @@ function Logo({width}: {width: number}) {
           top: "2em",
           fontSize: "0.2em",
           letterSpacing: "0.5em",
-        }}>
+        }}
+      >
         スライダー
       </span>
       <span
@@ -219,9 +234,10 @@ function Logo({width}: {width: number}) {
           fontWeight: "bold",
           fontStyle: "italic",
           letterSpacing: "0.05em",
-        }}>
+        }}
+      >
         NCHI
-        <span style={{fontSize: "0.8em"}}> Slider</span>
+        <span style={{ fontSize: "0.8em" }}> Slider</span>
       </span>
     </span>
   );
@@ -243,7 +259,8 @@ function CollectionView({
         style={{
           fontSize: (containerWidth / combinations.length) * 0.25,
           // fontStyle: "italic",
-        }}>
+        }}
+      >
         Collection・コレクション
       </span>
       <div
@@ -251,7 +268,8 @@ function CollectionView({
           display: "flex",
           justifyContent: "space-between",
           width: "100%",
-        }}>
+        }}
+      >
         {combinations.map((combo, i) => (
           <CellView
             key={i}

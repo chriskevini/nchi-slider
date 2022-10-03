@@ -1,10 +1,10 @@
-import {useDrag} from "@use-gesture/react";
-import React, {useMemo} from "react";
-import {CellView} from "./CellView";
-import {Game} from "./game";
-import {GameOverDialog} from "./GameOverDialog";
-import {GameWinDialog} from "./GameWinDialog";
-import {windowSizeUtils} from "./windowSizeUtils";
+import { useDrag } from "@use-gesture/react";
+import React, { useMemo } from "react";
+import { CellView } from "./CellView";
+import { Game } from "./game";
+import { GameOverDialog } from "./GameOverDialog";
+import { GameWinDialog } from "./GameWinDialog";
+import { windowSizeUtils } from "./windowSizeUtils";
 
 interface BoardViewProps {
   game: Game;
@@ -27,7 +27,7 @@ export function BoardView({
   onContinue,
   handleSwipe,
 }: BoardViewProps): React.ReactElement {
-  const {vmin, vmax, vw, vh} = windowSizeUtils();
+  const { vmin, vmax, vw, vh } = windowSizeUtils();
   const verticalOrientation =
     game.state === "over" || 330 + vmin(100) < vmax(100);
   // verticalOrientation = game.state === "over"
@@ -52,9 +52,10 @@ export function BoardView({
               translate: `${(cellWidth + gapWidth) * x}px  ${
                 (cellWidth + gapWidth) * y
               }px`,
-            }}>
+            }}
+          >
             <CellView
-              currentCell={{content: "", x: x, y: y}}
+              currentCell={{ content: "", x: x, y: y }}
               cellWidth={cellWidth}
             />
           </div>
@@ -75,7 +76,8 @@ export function BoardView({
               (cellWidth + gapWidth) * currentCell.y
             }px`,
             transition: "all 0.2s",
-          }}>
+          }}
+        >
           <CellView
             {...{
               currentCell,
@@ -105,14 +107,15 @@ export function BoardView({
         border: gapWidth + "px solid transparent",
         borderRadius: 4,
         margin: margin,
-      }}>
+      }}
+    >
       {blankCells}
       {cells}
       {game.state === "over" && (
-        <GameOverDialog {...{game, gapWidth, onPlayAgain}} />
+        <GameOverDialog {...{ game, gapWidth, onPlayAgain }} />
       )}
       {game.state === "2xBonus" && (
-        <GameWinDialog {...{gapWidth, onContinue}} />
+        <GameWinDialog {...{ gapWidth, onContinue }} />
       )}
     </div>
   );

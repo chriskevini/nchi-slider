@@ -1,10 +1,10 @@
-import React, {useState} from "react";
+import React, { useState } from "react";
 
 interface GameWinDialogProps {
   gapWidth: number;
   onContinue: () => void;
 }
-export function GameWinDialog({gapWidth, onContinue}: GameWinDialogProps) {
+export function GameWinDialog({ gapWidth, onContinue }: GameWinDialogProps) {
   const [hidden, setHidden] = useState(false);
   return (
     <div
@@ -18,7 +18,8 @@ export function GameWinDialog({gapWidth, onContinue}: GameWinDialogProps) {
         animation: "fadeIn 3s ease-out",
         opacity: hidden ? 0 : 1,
         transition: "opacity 1s",
-      }}>
+      }}
+    >
       <div
         style={{
           display: "flex",
@@ -26,13 +27,15 @@ export function GameWinDialog({gapWidth, onContinue}: GameWinDialogProps) {
           justifyContent: "space-around",
           textAlign: "center",
           translate: "0 0.7em",
-        }}>
+        }}
+      >
         <span
           style={{
             fontSize: gapWidth * 6,
             // fontWeight: "bold",
             width: "100%",
-          }}>
+          }}
+        >
           YOU WIN
         </span>
         <button
@@ -42,7 +45,8 @@ export function GameWinDialog({gapWidth, onContinue}: GameWinDialogProps) {
           }}
           style={{
             fontSize: gapWidth * 2,
-          }}>
+          }}
+        >
           <span>Continue with 2x Bonus</span>
         </button>
       </div>

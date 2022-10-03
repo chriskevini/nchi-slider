@@ -1,4 +1,4 @@
-import {initializeApp} from "firebase/app";
+import { initializeApp } from "firebase/app";
 import {
   getFirestore,
   collection,
@@ -28,7 +28,7 @@ console.log(db);
 
 export async function submitScore(scoreInfo: {}) {
   const scoresRef = collection(db, "nchiSlider", "db", "scores");
-  return addDoc(scoresRef, {...scoreInfo, createdAt: serverTimestamp()});
+  return addDoc(scoresRef, { ...scoreInfo, createdAt: serverTimestamp() });
 }
 
 export function getScores(count: number) {

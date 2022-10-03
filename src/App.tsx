@@ -1,8 +1,14 @@
-import {useState} from "react";
-import {newGame, slide, Directions, getLegalMoves, combinations} from "./game";
-import {BoardView} from "./BoardView";
-import {useLocalStorage} from "./useLocalStorage";
-import {GameInfo} from "./GameInfo";
+import { useState } from "react";
+import {
+  newGame,
+  slide,
+  Directions,
+  getLegalMoves,
+  combinations,
+} from "./game";
+import { BoardView } from "./BoardView";
+import { useLocalStorage } from "./useLocalStorage";
+import { GameInfo } from "./GameInfo";
 
 const BOARD_LENGTH = 4;
 
@@ -35,7 +41,7 @@ function App() {
         combinations.includes(e)
       ).length === combinations.length;
     if (isCollectionComplete && game.state === "playing")
-      return setGame((prev) => ({...prev, state: "2xBonus"}));
+      return setGame((prev) => ({ ...prev, state: "2xBonus" }));
     //prevent player from playing while GameWinDialog is visible
     if (isCollectionComplete && !continueWithBonus) return;
 
@@ -52,7 +58,7 @@ function App() {
     if (legalMoves.length === 0) {
       const score = game.points.reduce((acc, curr) => acc + curr, 0);
       setBestScore(Math.max(bestScore, score));
-      return setGame((prev) => ({...prev, state: "over"}));
+      return setGame((prev) => ({ ...prev, state: "over" }));
     }
 
     if (!legalMoves.includes(direction)) return;
@@ -74,15 +80,16 @@ function App() {
         width: "100vw",
         color: "#776e65",
         backgroundColor: "#faf8ef",
-      }}>
+      }}
+    >
       <GameInfo
-        {...{game, censored, setCensored, bestScore}}
+        {...{ game, censored, setCensored, bestScore }}
         onRestart={() => {
           setGame(newGame(BOARD_LENGTH));
         }}
       />
       <BoardView
-        {...{game, censored, handleSwipe}}
+        {...{ game, censored, handleSwipe }}
         onPlayAgain={() => setGame(newGame(BOARD_LENGTH))}
         onContinue={() => setContinueWithBonus(true)}
       />

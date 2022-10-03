@@ -1,9 +1,9 @@
-import React, {useState, useEffect} from "react";
-import {GiTrophyCup} from "react-icons/gi";
-import {bgcolors, colors} from "./CellView";
-import {BsArrowLeftSquareFill} from "react-icons/bs";
-import {getScores} from "./firebase";
-import {DocumentData, Timestamp} from "firebase/firestore/lite";
+import { DocumentData, Timestamp } from "firebase/firestore/lite";
+import React, { useEffect, useState } from "react";
+import { BsArrowLeftSquareFill } from "react-icons/bs";
+import { GiTrophyCup } from "react-icons/gi";
+import { bgcolors, colors } from "./CellView";
+import { getScores } from "./firebase";
 
 const NUMBER_OF_SCORES_TO_SHOW = 10;
 
@@ -90,8 +90,8 @@ function Leaderboard() {
                   style={{
                     borderBottom: "1px solid #fff8",
                   }}>
-                  <td style={{fontSize: "0.45em"}}>{i + 1}</td>
-                  <td style={{fontSize: "0.65em", padding: "0 0.5em"}}>
+                  <td style={{ fontSize: "0.45em" }}>{i + 1}</td>
+                  <td style={{ fontSize: "0.65em", padding: "0 0.5em" }}>
                     {row.flag}
                   </td>
                   <td
@@ -111,8 +111,8 @@ function Leaderboard() {
                         zIndex: 1,
                       }}></div>
                   </td>
-                  <td style={{fontWeight: "bold"}}>{row.score}</td>
-                  <td style={{fontSize: "0.45em", verticalAlign: "bottom"}}>
+                  <td style={{ fontWeight: "bold" }}>{row.score}</td>
+                  <td style={{ fontSize: "0.45em", verticalAlign: "bottom" }}>
                     {relativeTimestamp(row.createdAt) || row.createdAt}
                   </td>
                 </tr>

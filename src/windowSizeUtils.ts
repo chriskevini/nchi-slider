@@ -1,4 +1,4 @@
-import {useState, useEffect} from "react";
+import { useState, useEffect } from "react";
 
 // Retooled hook into util functions
 export function windowSizeUtils() {
@@ -35,5 +35,5 @@ export function windowSizeUtils() {
     // Remove event listener on cleanup
     return () => window.removeEventListener("resize", handleResize);
   }, []); // Empty array ensures that effect is only run on mount
-  return {vw, vh, vmin, vmax};
+  return { vw, vh, vmin, vmax };
 }

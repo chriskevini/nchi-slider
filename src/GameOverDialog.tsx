@@ -1,8 +1,8 @@
-import {useState} from "react";
-import {Game} from "./game";
-import {BsFillEyeFill} from "react-icons/bs";
-import {useLocalStorage} from "./useLocalStorage";
-import {submitScore} from "./firebase";
+import { useState } from "react";
+import { Game } from "./game";
+import { BsFillEyeFill } from "react-icons/bs";
+import { useLocalStorage } from "./useLocalStorage";
+import { submitScore } from "./firebase";
 
 interface GameOverDialogProps {
   game: Game;
@@ -31,11 +31,12 @@ export function GameOverDialog({
           animation: "fadeIn 3s ease-out",
           opacity: hidden ? 0 : 1,
           transition: "opacity 1s",
-        }}>
-        {newHighScore && <HighScoreView {...{game, gapWidth, score}} />}
-        <GameOverView {...{gapWidth, onPlayAgain}} />
+        }}
+      >
+        {newHighScore && <HighScoreView {...{ game, gapWidth, score }} />}
+        <GameOverView {...{ gapWidth, onPlayAgain }} />
       </div>
-      <DialogToggler {...{setHidden, hidden}} />
+      <DialogToggler {...{ setHidden, hidden }} />
     </>
   );
 }
@@ -44,7 +45,7 @@ interface DialogTogglerProps {
   hidden: boolean;
   setHidden: React.Dispatch<React.SetStateAction<boolean>>;
 }
-function DialogToggler({setHidden, hidden}: DialogTogglerProps) {
+function DialogToggler({ setHidden, hidden }: DialogTogglerProps) {
   return (
     <button
       onClick={() => setHidden((prev) => !prev)}
@@ -62,7 +63,8 @@ function DialogToggler({setHidden, hidden}: DialogTogglerProps) {
         backgroundColor: "transparent",
         opacity: hidden ? 0.5 : 1,
         transition: "opacity 1s",
-      }}>
+      }}
+    >
       <BsFillEyeFill />
     </button>
   );
@@ -76,7 +78,7 @@ interface HighScoreViewProps {
   score: number;
   gapWidth: number;
 }
-function HighScoreView({game, gapWidth, score}: HighScoreViewProps) {
+function HighScoreView({ game, gapWidth, score }: HighScoreViewProps) {
   const [name, setName] = useLocalStorage("name", "");
   const [flag, setFlag] = useLocalStorage("flag", "🇺🇳");
   const [waiting, setWaiting] = useState(false);
@@ -107,20 +109,23 @@ function HighScoreView({game, gapWidth, score}: HighScoreViewProps) {
         justifyContent: "center",
         textAlign: "center",
         fontSize: Math.max(gapWidth * 2, 16),
-      }}>
+      }}
+    >
       <span
         style={{
           fontSize: gapWidth * 4,
           fontWeight: "bold",
           width: "100%",
-        }}>
+        }}
+      >
         New High Score!
       </span>
 
       {!waiting && !submitted && (
         <form
           onSubmit={handleSubmit}
-          style={{display: "flex", gap: gapWidth}}>
+          style={{ display: "flex", gap: gapWidth }}
+        >
           <select
             name="flag"
             id="flag"
@@ -131,11 +136,10 @@ function HighScoreView({game, gapWidth, score}: HighScoreViewProps) {
               border: "1px solid #776e65",
               padding: "0em 0.25em",
               backgroundColor: "white",
-            }}>
+            }}
+          >
             {FLAGS.split(",").map((flag) => (
-              <option
-                key={flag}
-                value={flag}>
+              <option key={flag} value={flag}>
                 {flag}
               </option>
             ))}
@@ -162,7 +166,8 @@ function HighScoreView({game, gapWidth, score}: HighScoreViewProps) {
             style={{
               backgroundColor: "#f67c5f",
               border: "none",
-            }}>
+            }}
+          >
             <span>Submit</span>
           </button>
         </form>
@@ -171,7 +176,8 @@ function HighScoreView({game, gapWidth, score}: HighScoreViewProps) {
         <span
           style={{
             animation: "breathe 1s infinite",
-          }}>
+          }}
+        >
           Waiting for server...
         </span>
       )}
@@ -179,7 +185,8 @@ function HighScoreView({game, gapWidth, score}: HighScoreViewProps) {
         <span
           style={{
             animation: "overshoot 1s",
-          }}>
+          }}
+        >
           Score submitted!
         </span>
       )}
@@ -191,7 +198,7 @@ interface GameOverViewProps {
   gapWidth: number;
   onPlayAgain: () => void;
 }
-function GameOverView({gapWidth, onPlayAgain}: GameOverViewProps) {
+function GameOverView({ gapWidth, onPlayAgain }: GameOverViewProps) {
   return (
     <div
       style={{
@@ -200,20 +207,23 @@ function GameOverView({gapWidth, onPlayAgain}: GameOverViewProps) {
         justifyContent: "space-around",
         textAlign: "center",
         translate: "0 0.7em",
-      }}>
+      }}
+    >
       <span
         style={{
           fontSize: gapWidth * 6,
           // fontWeight: "bold",
           width: "100%",
-        }}>
+        }}
+      >
         GAME OVER
       </span>
       <button
         onClick={onPlayAgain}
         style={{
           fontSize: gapWidth * 2,
-        }}>
+        }}
+      >
         <span>Play Again</span>
       </button>
     </div>

@@ -1,7 +1,7 @@
 import React from "react";
-import {Cell} from "./game";
+import { Cell } from "./game";
 
-export const colors: {[key: number | string]: string} = {
+export const colors: { [key: number | string]: string } = {
   1: "#776e65",
   2: "#776e65",
   3: "#f9f6f2",
@@ -9,7 +9,7 @@ export const colors: {[key: number | string]: string} = {
   5: "#f9f6f2",
   default: "#776e65",
 };
-export const bgcolors: {[key: number | string]: string} = {
+export const bgcolors: { [key: number | string]: string } = {
   0: "#cdc1b4",
   1: "#eee4da",
   2: "#ede0c8",
@@ -86,7 +86,8 @@ export function CellView({
         zIndex: currentCell.merged ? 1 : 0,
         ...(gray ? grayStyle : {}),
         textShadow: "",
-      }}>
+      }}
+    >
       <span>{censor(currentCell.content.slice(-4))}</span>
       {/* special span for おちんちん  */}
       <span
@@ -100,7 +101,8 @@ export function CellView({
               `-${otntn} -${otntn} ${bgcolors[5]}, -${otntn} ${otntn} ${bgcolors[5]}`,
           fontSize: full,
           // fontWeight: "normal",
-        }}>
+        }}
+      >
         {currentCell.content.slice(-5, -4)}
       </span>
     </div>
