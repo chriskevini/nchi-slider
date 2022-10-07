@@ -112,7 +112,12 @@ function Leaderboard() {
                       }}></div>
                   </td>
                   <td style={{ fontWeight: "bold" }}>{row.score}</td>
-                  <td style={{ fontSize: "0.45em", verticalAlign: "bottom" }}>
+                  <td
+                    style={{
+                      fontSize: "0.45em",
+                      verticalAlign: "bottom",
+                      paddingLeft: "8px",
+                    }}>
                     {relativeTimestamp(row.createdAt) || row.createdAt}
                   </td>
                 </tr>

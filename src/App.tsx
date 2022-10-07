@@ -80,8 +80,7 @@ function App() {
         width: "100vw",
         color: "#776e65",
         backgroundColor: "#faf8ef",
-      }}
-    >
+      }}>
       <GameInfo
         {...{ game, censored, setCensored, bestScore }}
         onRestart={() => {

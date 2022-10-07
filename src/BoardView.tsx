@@ -52,8 +52,7 @@ export function BoardView({
               translate: `${(cellWidth + gapWidth) * x}px  ${
                 (cellWidth + gapWidth) * y
               }px`,
-            }}
-          >
+            }}>
             <CellView
               currentCell={{ content: "", x: x, y: y }}
               cellWidth={cellWidth}
@@ -76,8 +75,7 @@ export function BoardView({
               (cellWidth + gapWidth) * currentCell.y
             }px`,
             transition: "all 0.2s",
-          }}
-        >
+          }}>
           <CellView
             {...{
               currentCell,
@@ -107,8 +105,7 @@ export function BoardView({
         border: gapWidth + "px solid transparent",
         borderRadius: 4,
         margin: margin,
-      }}
-    >
+      }}>
       {blankCells}
       {cells}
       {game.state === "over" && (
